@@ -1,0 +1,43 @@
+use accesslogic
+
+db.tipos_empleados.insert({nombre:"Administrativo"})
+db.tipos_empleados.insert({nombre:"Docente"})
+db.tipos_empleados.insert({nombre:"Intendencia"})
+
+db.logins.insert({usuario:"jogal",password:"blabla05"})
+db.logins.insert({usuario:"marcop",password:"123456"})
+db.logins.insert({usuario:"cesarfr",password:"jarcorcito"})
+
+db.tarjetas.insert({serie:"76,99,20,197",estado:"activo"})
+db.tarjetas.insert({serie:"220,75,30,7",estado:"activo"})
+db.tarjetas.insert({serie:"136,4,15,184",estado:"activo"})
+db.tarjetas.insert({serie:"240,77,26,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"48,191,26,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"163,150,26,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"188,162,26,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"4,118,27,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"34,195,33,43",estado:"inactivo"})
+db.tarjetas.insert({serie:"249,193,26,43",estado:"inactivo"})
+
+db.empleados.insert({"nombre" : "Joaquin", "apPaterno" : "Galvan",  "apMaterno" : "Angeles", "direccion" : "Pemex 15, Teotihuacan", "telefono" : 5512345678, "email" : "joaquin@mail.com", "fechaNac" : "1992-04-26", "tEmpleado":ObjectId("5799508a3d2de8ff0ade0b0a"), "iLogin" :ObjectId("5799508a3d2de8ff0ade0b0d"), "iTarjeta" : ObjectId("5799508a3d2de8ff0ade0b10")})
+
+db.empleados.insert({"nombre" : "Cesar", "apPaterno" : "Hernandez",  "apMaterno" : "Antonio", "direccion" : "Conchitas 10, Zumpango", "telefono" : 5587654321, "email" : "cesar@mail.com", "fechaNac" : "1994-04-28", "tEmpleado":ObjectId("5799508a3d2de8ff0ade0b0a"), "iLogin" :ObjectId("5799508a3d2de8ff0ade0b0f"), "iTarjeta" : ObjectId("5799508a3d2de8ff0ade0b11")})
+
+db.empleados.insert({"nombre" : "Marco Antonio", "apPaterno" : "Palestina",  "apMaterno" : "Gomez", "direccion" : "Miguel Hidalgo 102, Zumpango", "telefono" : 5576542345, "email" : "marco@mail.com", "fechaNac" : "1994-06-28", "tEmpleado":ObjectId("5799508a3d2de8ff0ade0b0a"), "iLogin" :ObjectId("5799508a3d2de8ff0ade0b0e"), "iTarjeta" : ObjectId("5799508a3d2de8ff0ade0b12")})
+
+db.tipos_incidencias.insert({nombre:"Retardo"})
+db.tipos_incidencias.insert({nombre:"Falta"})
+
+db.salidas.insert({horaSalida:ISODate("2016-07-07T16:05:24.282Z"), iEmpleado: ObjectId("579951873d2de8ff0ade0b1a")})
+db.salidas.insert({horaSalida: ISODate("2016-07-07T16:05:37.118Z"), iEmpleado: ObjectId("579951873d2de8ff0ade0b1b")})
+db.salidas.insert({horaSalida: ISODate("2016-07-07T16:05:44.715Z"), iEmpleado: ObjectId("579951883d2de8ff0ade0b1c")})
+
+db.entradas.insert({horaSalida:ISODate("2016-07-07T15:59:14.822Z"), iEmpleado: ObjectId("579951873d2de8ff0ade0b1a")})
+db.entradas.insert({horaSalida: ISODate("2016-07-07T16:02:14.771Z"), iEmpleado: ObjectId("579951873d2de8ff0ade0b1b")})
+db.entradas.insert({horaSalida: ISODate("2016-07-07T16:02:44.027Z"), iEmpleado: ObjectId("579951883d2de8ff0ade0b1c")})
+
+db.eventos.insert({nombreEvento:"Evento 1", descripcion:"descripcion gg", fechaInicioEvento:"2016-05-25", fechaFinEvento: "2016-05-26"})
+
+db.incidencias.insert({fecha:ISODate("2016-07-07T16:02:14.771Z"),idTIncidencia:ObjectId("579952043d2de8ff0ade0b1d"), iEmpleado:ObjectId("579951873d2de8ff0ade0b1a")})
+db.incidencias.insert({fecha:ISODate("2016-07-07T16:02:44.027Z"),idTIncidencia:ObjectId("579952053d2de8ff0ade0b1e"), iEmpleado:ObjectId("579951873d2de8ff0ade0b1b")})
+db.incidencias.insert({fecha:ISODate("2016-07-07T16:46:44.941Z"),idTIncidencia:ObjectId("579952053d2de8ff0ade0b1e"), iEmpleado:ObjectId("579951883d2de8ff0ade0b1c")})

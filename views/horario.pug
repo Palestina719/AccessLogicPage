@@ -1,0 +1,154 @@
+doctype html
+html(lang="es")
+	head
+		title Sistema de Administración de Accesos-Acces Logic
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width")
+		link(rel="stylesheet" type="text/css" href="css/foundation.css")
+		link(rel="stylesheet" type="text/css" href="css/app.css")
+		script(src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous")
+		script(src="js/vendor/foundation.js")
+		script(src="js/app.js" type="text/javascript" charset="utf-8" async)
+body
+	div(class="row expanded")
+		div(class="small-12 medium-12 large-12 columns verde")
+			div(class="small-12 medium-12 large-12 columns")
+				img(src="img/Logo.png" class="logoP")
+				p(class="nombre negrita") Access Logic
+				br
+	div(class="row expanded")
+		div(class="small-2 medium-2 large-2 columns me")
+			div(class="small-5 small-offset-2 medium-5 medium-offset-2 large-5 large-offset-2 foto")
+				img(src="img/foto.png")
+			div(class="small-12 medium-12 large-12 columns user")
+				p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/calendario") Calendario
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/horario") Horario
+			if user.isAdmin
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/users") Usuarios		
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/incidencias") Incidencias
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/signout") Cerrar Sesión		
+		div(class="small-10 medium-10 large-10 columns")
+			div(id="workarea")
+				div(class="row")
+					div(class="small-10 small-offset-1 medium-10 medium-offset-1 large-10 large-offset-1 titOptions columns")
+						p(class="negrita") HORARIO DE TRABAJO
+
+					
+
+										
+								
+							
+							
+					div(class="small-10 medium-10 large-12 columns")
+						div(class="small-11 smll-offset-1 medium-11 medium-offset-1 large-10  columns")
+							table(class="stack" style="text-align:center;")
+								thead
+									tr(class="colorCell")
+										th(width="110" style="text-align:center;") Hora
+										th(width="100" style="text-align:center;") Lunes
+										th(width="150" style="text-align:center;") Martes
+										th(width="150" style="text-align:center;") Miércoles
+										th(width="150" style="text-align:center;") Jueves
+										th(width="150" style="text-align:center;") Viernes
+								tbody
+									tr
+										td(class="colorCell negrita") 8:00-9:00
+										td(Style="text-align: center;") 
+											p Inglés
+										td(Style="text-align: center;")
+											p Matemáticas
+										td(Style="text-align: center;")
+											p Dibujo
+										td(Style="text-align: center;")
+											p Español
+										td(Style="text-align: center;")
+											p Francés
+									tr
+										td(class="colorCell negrita") 9:00-10:00
+										td(Style="text-align: center;")
+											p Francés
+										td(Style="text-align: center;")
+											p Educación Física
+										td(Style="text-align: center;")
+											p Matemáticas
+										td(Style="text-align: center;")
+											p Educación Física
+										td(Style="text-align: center;")
+											p Informática
+									tr
+										td(class="colorCell negrita") 10:00-11:00
+										td(Style="text-align: center;")
+											p Matemáticas
+										td(Style="text-align: center;")
+											p Español
+										td(Style="text-align: center;")
+											p Educación Física
+										td(Style="text-align: center;")
+											p Dibujo
+										td(Style="text-align: center;")
+											p Español
+									tr
+										td(class="colorCell negrita") 11:00-11:50
+										td(Style="text-align: center;")
+											p Dibujo
+										td(Style="text-align: center;")
+											p Inglés
+										td(Style="text-align: center;")
+											p Español
+										td(Style="text-align: center;")
+											p Matemáticas
+										td(Style="text-align: center;")
+											p Ciencias Naturales
+									tr
+										td(class="colorCell negrita") 11:50-12:20
+										td(Style="text-align: center;")
+											p Receso
+										td(Style="text-align: center;")
+											p Receso
+										td(Style="text-align: center;")
+											p Receso
+										td(Style="text-align: center;")
+											p Receso
+										td(Style="text-align: center;")
+											p Receso
+									tr
+										td(class="colorCell negrita") 12:20-13:10
+										td(Style="text-align: center;")
+											p Historia
+										td(Style="text-align: center;")
+											p Ciencias Naturales
+										td(Style="text-align: center;")
+											p Informatica
+										td(Style="text-align: center;")
+											p Historia
+										td(Style="text-align: center;")
+											p Informática
+									tr
+										td(class="colorCell negrita") 13:10-14:00
+										td(Style="text-align: center;")
+											p Informática
+										td(Style="text-align: center;")
+											p Francés
+										td(Style="text-align: center;")
+											p Inglés
+										td(Style="text-align: center;")
+											p Inglés
+										td(Style="text-align: center;")
+											p Dibujo		
+	div(class="small-12 medium-12 large-12 verde columns" id="footer")
+			p(class="foot") COLEGIO AMERICA CCT 15PJN5044S Vicente Guerrero #29 Col Centro San Juan, Teotihuacan, México
+			p(class="foot1") Tel: 015919560161 mami_america_@hotmail.com
+			p(class="foot1")
+				a(href="privacidadguia.pdf" target="_blank" style="margin-left:0px; text-decoration:none;") Aviso de Privacidad
+	script(src="js/funciones.js" type="text/javascript" charset="utf-8" async)

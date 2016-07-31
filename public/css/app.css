@@ -1,0 +1,169 @@
+@media (max-width: 745px) {
+  .logoP {
+    display: none;
+  }
+
+  #footer {
+  	margin-top: 50px;
+  }
+}
+
+@media (min-width: 1800px) {
+  #workarea{
+  	overflow-y:scroll; 
+	height:785px; 
+	width:100%;
+	
+  }
+  #calendar{
+  	width:1100px; 
+  	margin:0 auto; 
+  	padding-top:30px; 
+  	font-size:12px;
+  }
+}
+
+@media (max-width: 1400px) {
+  #workarea{
+  	overflow-y:scroll; 
+	height:785px; 
+	width:100%;
+	
+  }
+  #calendar{
+  	max-width:890px; 
+  	margin:0 auto; 
+  	padding-top:30px; 
+  	font-size:12px;
+  }
+}
+
+body{
+	font-family: Arial;
+
+
+}
+#Blogin{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 50% 110px;
+}
+#BUsers{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 60% 125px;
+}
+
+.verde{
+	background-color: #0AA257;
+}
+.azul{
+	background-color: #0C2D7A;
+}
+.radio{
+	border-radius: 8px;
+}
+
+.logoP{
+	margin-top: 2px;
+	width: 80px;
+	height: 100px;
+	position: absolute;
+	padding: 5px;
+}
+.nombre{
+	color: white;
+	font-size: 30pt;
+	text-align: center;
+	font-weight:bold;
+	
+}
+.titulo{
+	color: white;
+	font-size: 28px;
+	text-align: center;
+	margin-top: -37px;
+	font-weight:bold;
+	
+}
+.negrita{
+	font-weight:bold;
+}
+.contlogin{
+	margin-top: 35px;
+	padding-bottom: 45px;	
+}
+.leyenda{
+	padding: 12px;
+	color: white;
+	font-size: 25px;
+	text-align: center;
+}
+.inputs{
+	margin-top: 20px;
+}
+.foot{
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+}
+.foot1{
+	color: white;
+	margin-top: -20px;
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;	
+}
+/*admin*/
+.me{
+	background-color: #006633;
+	height: 788px;
+}
+.foto img{
+	width:190px;
+	margin-left: 25%;
+}
+.user{
+	text-align: center;
+	color: white
+}
+.item{
+	background-color: #006633;
+	font-size: 23px;
+	color:white;
+	margin-top: 20px;
+}
+li{
+	color: white;
+	padding-left: 20px;
+}
+a{
+	color: white
+}
+a:hover{
+	color: white;
+	background-color: #0AA257;
+	margin-left: 2%;
+}
+.titOptions{
+	color:black;
+	text-align: center;
+	font-size: 28px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.colorCell{
+	background-color: #5cffaf;
+}
+/*Encabezados de tabla*/
+.encT{
+	text-align: center;
+}
+.scroll{
+
+
+
+
+}
+

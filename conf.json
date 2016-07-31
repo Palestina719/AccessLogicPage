@@ -1,0 +1,15 @@
+{
+	"server" : {
+		"http_port" : 8010,
+		"https_port": 8443,
+		"cer" : "",
+		"key" : ""
+	},
+	"db" : "mongodb",
+    "mongodb" : {
+        "host" : "localhost",
+        "collection" : "accesslogic",
+        "port" : 27017,
+        "options" : { "auto_reconnect" : true }
+    }
+}

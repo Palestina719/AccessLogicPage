@@ -1,0 +1,131 @@
+doctype html
+html(lang="es")
+	head
+		title Sistema de Administración de Accesos-Acces Logic
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width")
+		link(rel="stylesheet" type="text/css" href="css/foundation.css")
+		link(rel="stylesheet" type="text/css" href="css/app.css")
+		script(src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous")
+		script(src="js/vendor/foundation.js")
+		script(src="js/app.js" type="text/javascript" charset="utf-8" async)
+body
+	div(class="row expanded")
+		div(class="small-12 medium-12 large-12 columns verde")
+			div(class="small-12 medium-12 large-12 columns")
+				img(src="img/Logo.png" class="logoP")
+				p(class="nombre negrita") Access Logic
+				br
+				
+	div(class="row expanded")
+		div(class="small-2 medium-2 large-2 columns me")
+			div(class="small-5 small-offset-2 medium-5 medium-offset-2 large-5 large-offset-2 foto")
+				img(src="img/foto.png")
+			div(class="small-12 medium-12 large-12 columns user")
+				p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/calendario") Calendario
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/horario") Horario
+			if user.isAdmin
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/users") Usuarios		
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/incidencias") Incidencias
+			div(class="menu large-12 row expanded item")
+				li
+					a(href="/signout") Cerrar Sesión	
+		div(class="small-10 medium-10 large-10 columns")
+			div(id="workarea")
+				div(class="row")
+					
+					div(class="large-12")
+						form(method='POST', action='/search')
+							div(class="small-2 medium-2 large-2 large-offset-2 columns")
+								br
+								label Buscar empleado
+							div(class="small-2 medium-2 large-3 columns")
+								br
+								input(type="text" name="search" id="right-label" class="radio")
+							
+							div(class="small-3 medium-3 large-5 columns")
+								br
+								button(type='submit' class="warning button radio") Buscar
+								
+				if message
+					div(class="row expanded")
+						if messageNoUsers 
+							div(class="alert callout [radius round]" data-alert)
+								p(class="negrita text-center") La bésqueda no generó ningún resultado, ingrese otro valor de búsqueda.
+						else
+							div(class="alert callout [radius round]" data-alert)
+								p(class="negrita text-center") No puedes eliminar al usuario con el que iniciaste sesión.
+						div(class="small-12 medium-12 large-12 text-center")
+											a(href="/add-user" class="button radio") Agregar usuario
+						div(class="small-12 medium-12 large-12 columns")
+							div(class="small-10 smll-offset-2 medium-10 medium-offset-2 large-10 large-offset-1 columns ")
+								table(class="stack")
+									thead
+										tr(class="colorCell")
+											th(width="100" class="encT") ID Usuario
+											th(width="150" class="encT") Nombre
+											th(width="150" class="encT") Usuario
+											th(width="150" class="encT") Contraseña
+											th(width="150" class="encT") Modificar
+											th(width="150" class="encT") Eliminar
+										if users == null
+											tr
+												td(class="text-center" colspan="6") Sin registros
+										else
+											each val, index in users
+												tr
+													td(class="text-center")=val._id
+													td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
+													td(class="text-center")=val.iLogin.usuario
+													td(class="text-center")=val.iLogin.password
+													td(class="text-center")
+														form(action='/users/'+val._id+'')
+															button(type='submit' class="success button radio") Modificar
+													
+													td(class="text-center")
+														form(method='POST', action='/users/'+val._id+'?_method=DELETE')
+															button(type='submit' class="alert button radio") Delete
+				else	
+						div(class="small-12 medium-12 large-12 text-center")
+											a(href="/add-user" class="button radio") Agregar usuario
+						div(class="small-12 medium-12 large-12 columns")
+							div(class="small-10 smll-offset-2 medium-10 medium-offset-2 large-10 large-offset-1 columns ")
+								table(class="stack")
+									thead
+										tr(class="colorCell")
+											th(width="100" class="encT") ID Usuario
+											th(width="150" class="encT") Nombre
+											th(width="150" class="encT") Usuario
+											th(width="150" class="encT") Contraseña
+											th(width="150" class="encT") Modificar
+											th(width="150" class="encT") Eliminar
+										
+										each val, index in users
+											tr
+												td(class="text-center")=val._id
+												td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
+												td(class="text-center")=val.iLogin.usuario
+												td(class="text-center")=val.iLogin.password
+												td(class="text-center")
+													form(action='/users/'+val._id+'')
+														button(type='submit' class="success button radio") Modificar
+													
+												td(class="text-center")
+													form(method='POST', action='/users/'+val._id+'?_method=DELETE')
+														button(type='submit' class="alert button radio") Eliminar						
+									
+	div(class="small-12 medium-12 large-12 verde columns" id="footer")
+			p(class="foot") COLEGIO AMERICA CCT 15PJN5044S Vicente Guerrero #29 Col Centro San Juan, Teotihuacan, México
+			p(class="foot1") Tel: 015919560161 mami_america_@hotmail.com
+			p(class="foot1")
+				a(href="privacidadguia.pdf" target="_blank" style="margin-left:0px; text-decoration:none;") Aviso de Privacidad
+	script(src="js/funciones.js" type="text/javascript" charset="utf-8" async)

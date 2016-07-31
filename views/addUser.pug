@@ -1,0 +1,127 @@
+doctype html
+html(lang="es")
+	head
+		meta(charset="utf-8")
+		title addUser
+		meta(name="viewport" content="width=device-width")
+		link(rel="stylesheet" type="text/css" href="css/foundation.css")
+		link(rel="stylesheet" type="text/css" href="css/app.css")
+		script(src="js/vendor/foundation.js")
+	body
+		div(class="row expanded")
+			div(class="small-12 medium-12 large-12 columns verde")
+				div(class="small-12 medium-12 large-12 columns")
+					img(src="img/Logo.png" class="logoP")
+					p(class="nombre negrita") Access Logic
+					br
+					
+		div(class="row expanded")
+			div(class="small-2 medium-2 large-2 columns me")
+				div(class="small-5 small-offset-2 medium-5 medium-offset-2 large-5 large-offset-2 foto")
+					img(src="img/foto.png")
+				div(class="small-12 medium-12 large-12 columns user")
+					p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/calendario") Calendario
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/horario") Horario
+				if user.isAdmin
+					div(class="menu large-12 row expanded item")
+						li
+							a(href="/users") Usuarios		
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/incidencias") Incidencias
+				div(class="menu large-12 row expanded item")
+					li
+						a(href="/signout") Cerrar Sesión	
+			div(class="small-10 medium-10 large-10 columns")
+				div(id="workarea")
+
+					div(class="row")
+						div(class="small-11 small-offset-1 medium-11 medium-offset-1 large-11 large-offset-1 titOptions columns")
+							p(class="negrita") Agregar Empleado
+						div(class="small-12 medium-12 large-12 columns")
+							div(class="small-10 smll-offset-1 medium-10 medium-offset-1 large-10 large-offset-1 columns")
+								form(method='POST', action='/add-user/')
+									div(class="row")
+										div(class="small-4 medium-4 large-4 columns")
+											label Nombre(s)
+										div(class="small-8 medium-8 large-8 columns")
+											input(type="text" class="radio" required name="nombre" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label A.Paterno
+										div(class="small-8 medium-8 large-8 columns")
+											input(type="text" name="apPaterno" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label A.Materno
+										div(class="small-8 medium-8 large-8 columns")
+											input(type="text" name="apMaterno" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label Direccion
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="text" name="direccion" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label Telefono
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="text" name="telefono" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label E-Mail
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="text" name="email" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label FechaNac
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="date" name="fechaNac" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label Tipo Empleado
+										div(class="small-7 medium-7 large-8 columns")
+											section
+												select(name="tEmpleado" class="radio" style="height: 35px;")
+													each val, index in puestos
+														option=val.nombre
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label ¿Administrador del sistema?
+										div(class="small-7 medium-7 large-8 columns")
+											section
+												select(name="isAdmin" class="radio" style="height: 35px;")
+													option No
+													option Si
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label idTrjeta
+										div(class="small-7 medium-7 large-8 columns")
+											section
+												select(name="serieTarjeta" class="radio" style="height: 35px;")
+													each val, index in cards
+														option=val.serie
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label Nombre de usuario
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="text" name="username" required class="radio" style="height: 35px;")
+									div(class="row")
+										div(class="small-3 medium-3 large-3 columns")
+											label Password
+										div(class="small-7 medium-7 large-8 columns")
+											input(type="password" name="password" required class="radio" style="height: 35px;")
+
+									div(class="row")
+										div(class="large-4 large-offset-2 columns")
+											input(type="submit" name="btn" value="Guardar" class="button radio")
+										div(class="large-4 columns")
+											a(href="/users" class="button radio") Cancelar
+		div(class="small-12 medium-12 large-12 verde columns" id="footer")
+				p(class="foot") COLEGIO AMERICA CCT 15PJN5044S Vicente Guerrero #29 Col Centro San Juan, Teotihuacan, México
+				p(class="foot1") Tel: 015919560161 mami_america_@hotmail.com
+		script(src="js/funciones.js" type="text/javascript" charset="utf-8" async)
