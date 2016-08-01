@@ -8,7 +8,11 @@
   }
 }
 
-@media (min-width: 1800px) {
+@media (min-width: 1400px) {
+ .me{
+	background-color: #006633;
+	height: 1070px;
+}
   #workarea{
   	overflow-y:scroll; 
 	height:785px; 
@@ -23,7 +27,7 @@
   }
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1390px) {
   #workarea{
   	overflow-y:scroll; 
 	height:785px; 
@@ -36,6 +40,10 @@
   	padding-top:30px; 
   	font-size:12px;
   }
+  .me{
+	background-color: #006633;
+	height: 788px;
+}
 }
 
 body{
@@ -116,10 +124,7 @@ body{
 	font-weight: bold;	
 }
 /*admin*/
-.me{
-	background-color: #006633;
-	height: 788px;
-}
+
 .foto img{
 	width:190px;
 	margin-left: 25%;
