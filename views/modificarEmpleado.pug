@@ -1,14 +1,14 @@
 doctype html
 html(lang="es")
 	head
-		title Accesos-Acces Logic
+		title Access Logic - Modificar Empleado
 		meta(charset="utf-8")
 		meta(name="viewport" content="width=device-width")
 		link(rel="stylesheet" type="text/css" href="../css/foundation.css")
 		link(rel="stylesheet" type="text/css" href="../css/app.css")
-		script(src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous")
-		script(src="../js/vendor/foundation.js")
-		script(src="../js/app.js" type="text/javascript" charset="utf-8" async)
+		script(src="js/jquery-1.12.0.min.js" )
+		script(src="js/vendor/foundation.js")
+		script(src="js/app.js" type="text/javascript" charset="utf-8" async)
 body
 	div(class="row expanded")
 		div(class="small-12 medium-12 large-12 columns verde")
@@ -50,43 +50,43 @@ body
 								
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
-										label Nombre
+										label Nombre(s)
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="nombre" value=userModificar.nombre)
+										input(type="text" class="radio" style="height: 35px;" placeholder="Nombre(s)" name="nombre" value=userModificar.nombre)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
 										label Apellido Paterno
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="apPaterno" value=userModificar.apPaterno)
+										input(type="text" class="radio" style="height: 35px;" placeholder="Apellido Paterno" name="apPaterno" value=userModificar.apPaterno)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
 										label Apellido Materno
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="apMaterno" value=userModificar.apMaterno)
+										input(type="text" class="radio" style="height: 35px;" placeholder="Apellido Materno" name="apMaterno" value=userModificar.apMaterno)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
-										label Direccion
+										label Dirección
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="direccion" value=userModificar.direccion)
+										input(type="text" class="radio" style="height: 35px;" placeholder="Dirección" name="direccion" value=userModificar.direccion)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
 										label Teléfono
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="telefono" value=userModificar.telefono)
+										input(type="text" class="radio" style="height: 35px;" placeholder="Teléfono" name="telefono" value=userModificar.telefono)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
-										label e-Mail
+										label E-Mail
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" class="radio" style="height: 35px;" name="email"  value=userModificar.email)
+										input(type="text" class="radio" style="height: 35px;" placeholder="E-Mail" name="email"  value=userModificar.email)
 								
 								div(class="row")
 										div(class="small-3 medium-3 large-3 columns")
-											label FechaNac
+											label Fecha de Nacimiento
 										div(class="small-7 medium-7 large-8 columns")
 											input(type="date" name="fechaNac" required class="radio" style="height: 35px;" value=userModificar.fNac)
 								div(class="row")
 									div(class="small-3 medium-3 large-3 columns")
-										label Tipo Empleado
+										label Tipo de Empleado
 									div(class="small-7 medium-7 large-8 columns")
 										section
 											select(name="tEmpleado" class="radio" style="height: 35px;")
@@ -109,7 +109,7 @@ body
 													option Si
 								div(class="row")
 									div(class="small-3 medium-3 large-3 columns")
-										label idTrjeta
+										label Número de Tarjeta
 									div(class="small-7 medium-7 large-8 columns")
 										sections
 											select(name="serieTarjeta" class="radio" style="height: 35px;")
@@ -122,12 +122,12 @@ body
 									div(class="small-3 medium-3 large-3 columns")
 										label Nombre de usuario
 									div(class="small-7 medium-7 large-8 columns")
-										input(type="text" value=userModificar.iLogin.usuario name="username" required class="radio" style="height: 35px;")
+										input(type="text" value=userModificar.iLogin.usuario name="username" placeholder="Nombre de usuario" required class="radio" style="height: 35px;")
 								div(class="row")
 									div(class="small-3 medium-3 large-3 columns")
-										label Password
+										label Contraseña
 									div(class="small-7 medium-7 large-8 columns")
-										input(type="password" value=userModificar.iLogin.password name="password" required class="radio" style="height: 35px;")
+										input(type="password" value=userModificar.iLogin.password placeholder="Contraseña" name="password" required class="radio" style="height: 35px;")
 								div(class="row")
 									div(class="large-4 large-offset-2 columns")
 										button(type='submit' class="button radio") Modificar

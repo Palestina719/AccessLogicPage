@@ -165,10 +165,12 @@ a:hover{
 .encT{
 	text-align: center;
 }
-.scroll{
+.scroll{}
 
-
-
-
+.cortar{
+  width:20px !important;
+  height:20px !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important; 
+  overflow:hidden !important; 
 }
-
