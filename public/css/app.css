@@ -168,9 +168,12 @@ a:hover{
 .scroll{}
 
 .cortar{
-  width:20px !important;
-  height:20px !important;
-  text-overflow:ellipsis !important;
-  white-space:nowrap !important; 
-  overflow:hidden !important; 
+  width:80px;
+  text-overflow:ellipsis;
+  white-space:nowrap; 
+  overflow:hidden; 
+}
+
+.spacebtn {
+    margin-left: 10px;
 }

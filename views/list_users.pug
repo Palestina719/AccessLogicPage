@@ -51,7 +51,7 @@ body
 								label Buscar empleado
 							div(class="small-2 medium-2 large-3 columns")
 								br
-								input(type="text" name="search" id="right-label" class="radio")
+								input(type="text" name="search" id="right-label" placeholder="Buscar" class="radio")
 							
 							div(class="small-3 medium-3 large-5 columns")
 								br
@@ -84,10 +84,11 @@ body
 										else
 											each val, index in users
 												tr
-													td(class="text-center cortar")=val._id
+													td(class="text-center")
+														div(class="cortar")=val._id
 													td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
 													td(class="text-center")=val.iLogin.usuario
-													td(class="text-center")=val.iLogin.password
+													td(class="text-center") ******
 													td(class="text-center")
 														form(action='/users/'+val._id+'')
 															button(type='submit' class="success button radio") Modificar
@@ -111,10 +112,11 @@ body
 										
 										each val, index in users
 											tr
-												td(class="text-center cortar")=val._id
+												td(class="text-center")
+													div(class="cortar")=val._id
 												td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
 												td(class="text-center")=val.iLogin.usuario
-												td(class="text-center")=val.iLogin.password
+												td(class="text-center") ******
 												td(class="text-center")
 													form(action='/users/'+val._id+'')
 														button(type='submit' class="success button radio") Modificar
@@ -125,10 +127,12 @@ body
 			div(class="reveal" id="mdelUser" data-reveal)
 				div(class="row")
 					div(class="medium-12 column text-center")
-						h4 ¿En verdad desea eliminar este empleado?
+						br
+						h5 ¿En verdad desea eliminar este empleado?
+						br
 						form(id="frmDel" method='POST')
 							button(type='submit' class="alert button radio") Eliminar
-							button(type='button' class="button radio" data-close) Cancelar
+							button(type='button' class="button radio spacebtn" data-close) Cancelar
 				button(class="close-button" data-close aria-label="Close modal" type="button")
 					span(aria-hidden="true") &times;
 									
