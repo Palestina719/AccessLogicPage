@@ -192,10 +192,15 @@ a:hover{
 .encT{
 	text-align: center;
 }
-.scroll{
+.scroll{}
 
-
-
-
+.cortar{
+  width:80px;
+  text-overflow:ellipsis;
+  white-space:nowrap; 
+  overflow:hidden; 
 }
 
+.spacebtn {
+    margin-left: 10px;
+}

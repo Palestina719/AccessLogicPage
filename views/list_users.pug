@@ -1,12 +1,13 @@
 doctype html
 html(lang="es")
 	head
-		title Sistema de Administración de Accesos-Acces Logic
+		title Access Logic - Administrar Empleados
 		meta(charset="utf-8")
 		meta(name="viewport" content="width=device-width")
+		link(rel="stylesheet" type="text/css" href="css/motion-ui.min.css")
 		link(rel="stylesheet" type="text/css" href="css/foundation.css")
 		link(rel="stylesheet" type="text/css" href="css/app.css")
-		script(src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous")
+		script(src="js/jquery-1.12.0.min.js" )
 		script(src="js/vendor/foundation.js")
 		script(src="js/app.js" type="text/javascript" charset="utf-8" async)
 body
@@ -50,30 +51,30 @@ body
 								label Buscar empleado
 							div(class="small-2 medium-2 large-3 columns")
 								br
-								input(type="text" name="search" id="right-label" class="radio")
+								input(type="text" name="search" id="right-label" placeholder="Buscar" class="radio")
 							
 							div(class="small-3 medium-3 large-5 columns")
 								br
 								button(type='submit' class="warning button radio") Buscar
-								
+                                
 				if message
 					div(class="row expanded")
 						if messageNoUsers 
 							div(class="alert callout [radius round]" data-alert)
-								p(class="negrita text-center") La bésqueda no generó ningún resultado, ingrese otro valor de búsqueda.
+								p(class="negrita text-center") La búsqueda no generó ningún resultado, ingrese otro valor de búsqueda.
 						else
 							div(class="alert callout [radius round]" data-alert)
 								p(class="negrita text-center") No puedes eliminar al usuario con el que iniciaste sesión.
 						div(class="small-12 medium-12 large-12 text-center")
-											a(href="/add-user" class="button radio") Agregar usuario
+											a(href="/add-user" class="button radio") Agregar empleado
 						div(class="small-12 medium-12 large-12 columns")
 							div(class="small-10 smll-offset-2 medium-10 medium-offset-2 large-10 large-offset-1 columns ")
 								table(class="stack")
 									thead
 										tr(class="colorCell")
-											th(width="100" class="encT") ID Usuario
+											th(width="100" class="encT") ID
 											th(width="150" class="encT") Nombre
-											th(width="150" class="encT") Usuario
+											th(width="150" class="encT") Empleado
 											th(width="150" class="encT") Contraseña
 											th(width="150" class="encT") Modificar
 											th(width="150" class="encT") Eliminar
@@ -83,45 +84,57 @@ body
 										else
 											each val, index in users
 												tr
-													td(class="text-center")=val._id
+													td(class="text-center")
+														div(class="cortar")=val._id
 													td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
 													td(class="text-center")=val.iLogin.usuario
-													td(class="text-center")=val.iLogin.password
+													td(class="text-center") ******
 													td(class="text-center")
 														form(action='/users/'+val._id+'')
 															button(type='submit' class="success button radio") Modificar
 													
 													td(class="text-center")
-														form(method='POST', action='/users/'+val._id+'?_method=DELETE')
-															button(type='submit' class="alert button radio") Delete
+														button(type="button" data-open="mdelUser" value='/users/'+val._id+'?_method=DELETE' class="alert button radio" onclick="delUsr(event)") Eliminar
 				else	
 						div(class="small-12 medium-12 large-12 text-center")
-											a(href="/add-user" class="button radio") Agregar usuario
+											a(href="/add-user" class="button radio") Agregar empleado
 						div(class="small-12 medium-12 large-12 columns")
 							div(class="small-10 smll-offset-2 medium-10 medium-offset-2 large-10 large-offset-1 columns ")
 								table(class="stack")
 									thead
 										tr(class="colorCell")
-											th(width="100" class="encT") ID Usuario
+											th(width="100" class="encT") ID
 											th(width="150" class="encT") Nombre
-											th(width="150" class="encT") Usuario
+											th(width="150" class="encT") Empleado
 											th(width="150" class="encT") Contraseña
 											th(width="150" class="encT") Modificar
 											th(width="150" class="encT") Eliminar
 										
 										each val, index in users
 											tr
-												td(class="text-center")=val._id
+												td(class="text-center")
+													div(class="cortar")=val._id
 												td(class="text-center")=val.nombre + " "+ val.apPaterno + " " + val.apMaterno
 												td(class="text-center")=val.iLogin.usuario
-												td(class="text-center")=val.iLogin.password
+												td(class="text-center") ******
 												td(class="text-center")
 													form(action='/users/'+val._id+'')
 														button(type='submit' class="success button radio") Modificar
 													
 												td(class="text-center")
-													form(method='POST', action='/users/'+val._id+'?_method=DELETE')
-														button(type='submit' class="alert button radio") Eliminar						
+													button(type="button" data-open="mdelUser" value='/users/'+val._id+'?_method=DELETE' class="alert button radio" onclick="delUsr(event)") Eliminar
+													
+			div(class="reveal" id="mdelUser" data-reveal)
+				div(class="row")
+					div(class="medium-12 column text-center")
+						br
+						h5 ¿En verdad desea eliminar este empleado?
+						br
+						form(id="frmDel" method='POST')
+							button(type='submit' class="alert button radio") Eliminar
+							button(type='button' class="button radio spacebtn" data-close) Cancelar
+				button(class="close-button" data-close aria-label="Close modal" type="button")
+					span(aria-hidden="true") &times;
 									
 	div(class="small-12 medium-12 large-12 verde columns" id="footer")
 			p(class="foot") COLEGIO AMERICA CCT 15PJN5044S Vicente Guerrero #29 Col Centro San Juan, Teotihuacan, México
