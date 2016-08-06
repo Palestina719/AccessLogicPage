@@ -8,26 +8,47 @@
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1900px) {
  .me{
 	background-color: #006633;
-	height: 1070px;
+	height: 904px;
 }
   #workarea{
   	overflow-y:scroll; 
-	height:785px; 
+	height:785px !important; 
 	width:100%;
 	
   }
   #calendar{
-  	width:1100px; 
+  	width:90%;
+    height: 900px !important;
+  	margin:0 auto; 
+  	padding-top:30px; 
+  	font-size:12px;
+  }
+}
+
+@media (max-width: 1600px) {
+ .me{
+	background-color: #006633;
+	height: 785px;
+}
+  #workarea{
+  	overflow-y:scroll; 
+	height:785px !important; 
+	width:100%;
+	
+  }
+  #calendar{
+  	width:90%;
+    height: 900px !important;
   	margin:0 auto; 
   	padding-top:90px; 
   	font-size:12px;
   }
 }
 
-@media (max-width: 1390px) {
+@media (max-width: 1366px) {
   #workarea{
   	overflow-y:scroll; 
 	height:785px; 
@@ -35,7 +56,8 @@
 	
   }
   #calendar{
-  	max-width:890px; 
+  	width:80%;
+/*  	max-width:850px;*/
   	margin:0 auto; 
   	padding-top:30px; 
   	font-size:12px;
