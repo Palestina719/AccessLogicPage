@@ -36,16 +36,21 @@ exports.users = function(req, res) {
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
-    findAllEmpleados(function(err,emps){
-      if(err)
-        res.send(500, err.message);
-      if(req.session.errDel){
-        res.status(200).render('list_users',{user: empleado, users:emps, message: req.flash('message'),messageNoUsers : false, messageLogin:true}); 
-      }
-      else{
-        res.status(200).render('list_users',{user: empleado, users:emps});   
-      }
-    });
+    if(empleado.isAdmin){
+      findAllEmpleados(function(err,emps){
+        if(err)
+          res.send(500, err.message);
+        if(req.session.errDel){
+          res.status(200).render('list_users',{user: empleado, users:emps, message: req.flash('message'),messageNoUsers : false, messageLogin:true}); 
+        }
+        else{
+          res.status(200).render('list_users',{user: empleado, users:emps});   
+        }
+      });
+    }
+    else {
+      res.redirect('/');
+    }
   });
 };
 
@@ -69,96 +74,108 @@ exports.incidencias = function(req, res) {
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
-    //findIncidenciasByUserId(empleado._id, function(err, incidencias){
+    if(empleado.isAdmin){
       findIncidencias( function(err, incidencias){
-      if(err)
-        res.send(500, err.message);
-      for(var x=0; x<incidencias.length; x++){
-        var fecha = new Date(incidencias[x].fecha);
-        var mes = fecha.getMonth() +1;     // 11
-        var dia = fecha.getDate();      // 29
-        var anio = fecha.getFullYear();
-        var diaSemana = fecha.getDay();
-        var h = fecha.getHours();
-        var m = fecha.getMinutes();
-        var s = fecha.getSeconds();
-        var hora = h+":"+m+":"+s;
-        if(dia > 0 && dia < 10)
-          dia = "0"+dia;
-      
-        //anio="19"+anio;
-        switch(diaSemana){
-          case 0: 
-          diaSemana = "Domingo";
-          break;
-          case 1: 
-          diaSemana = "Lunes";
-          break;
-          case 2: 
-          diaSemana = "Martes";
-          break;
-          case 3: 
-          diaSemana = "Miércoles";
-          break;
-          case 4: 
-          diaSemana = "Jueves";
-          break;
-          case 5: 
-          diaSemana = "Viernes";
-          break;
-          case 6: 
-          diaSemana = "Sábado";
-          break;
-        }
-        switch(mes){
-          case 1: 
-            mes = "Enero";
-            break;
-          case 2: 
-            mes = "Febrero";
-            break;
-          case 3: 
-            mes = "Marzo";
-            break;
-          case 4: 
-            mes = "Abril";
-            break;
-          case 5: 
-            mes = "Mayo";
-            break;
-          case 6: 
-            mes = "Junio";
-            break;
-          case 7: 
-            mes = "Julio";
-            break;
-          case 8: 
-            mes = "Agosto";
-            break;
-          case 9: 
-            mes = "Septiembre";
-            break;
-          case 10: 
-            mes = "Octubre";
-            break;
-          case 11: 
-            mes = "Noviembre";
-            break;
-          case 12: 
-            mes = "Diciembre";
-            break;
-        }
-        fecha = diaSemana +", " +dia+ " de "+mes+" del "+ anio+", a las "+hora;
-        incidencias[x].date=fecha;
-      }
-      
-      console.log(incidencias);
-      res.status(200).render('incidencias',{user: empleado, incidencias: incidencias}); 
-    });
+        if(err)
+          res.send(500, err.message);
+        for(var x=0; x<incidencias.length; x++){
+          var fecha = new Date(incidencias[x].fecha);
+          fecha = formatDate(fecha);
+          incidencias[x].date=fecha;
+        }      
+        res.status(200).render('incidencias',{user: empleado, incidencias: incidencias}); 
+      });
+    }
+    else{
+      findIncidenciasByUserId(empleado._id, function(err, incidenciaInd){
+        if(err)
+          res.send(500, err.message);
+        for(var x=0; x<incidenciaInd.length; x++){
+          var fecha = new Date(incidenciaInd[x].fecha);
+          fecha = formatDate(fecha);
+          incidenciaInd[x].date=fecha;
+        }      
+        res.status(200).render('incidencias',{user: empleado, incidencias: incidenciaInd}); 
+      })
+    }
   });
 };
 
-
+function formatDate(fecha){
+  var mes = fecha.getMonth() +1;     // 11
+  var dia = fecha.getDate();      // 29
+  var anio = fecha.getFullYear();
+  var diaSemana = fecha.getDay();
+  var h = fecha.getHours();
+  var m = fecha.getMinutes();
+  var s = fecha.getSeconds();
+  var hora = h+":"+m+":"+s;
+  if(dia > 0 && dia < 10)
+    dia = "0"+dia;
+  switch(diaSemana){
+    case 0: 
+    diaSemana = "Domingo";
+    break;
+    case 1: 
+    diaSemana = "Lunes";
+    break;
+    case 2: 
+    diaSemana = "Martes";
+    break;
+    case 3: 
+    diaSemana = "Miércoles";
+    break;
+    case 4: 
+    diaSemana = "Jueves";
+    break;
+    case 5: 
+    diaSemana = "Viernes";
+    break;
+    case 6: 
+    diaSemana = "Sábado";
+    break;
+  }
+  switch(mes){
+    case 1: 
+    mes = "Enero";
+    break;
+    case 2: 
+    mes = "Febrero";
+    break;
+    case 3: 
+    mes = "Marzo";
+    break;
+    case 4: 
+    mes = "Abril";
+    break;
+    case 5: 
+    mes = "Mayo";
+    break;
+    case 6: 
+    mes = "Junio";
+    break;
+    case 7: 
+    mes = "Julio";
+    break;
+    case 8: 
+    mes = "Agosto";
+    break;
+    case 9: 
+    mes = "Septiembre";
+    break;
+    case 10: 
+    mes = "Octubre";
+    break;
+    case 11: 
+    mes = "Noviembre";
+    break;
+    case 12: 
+    mes = "Diciembre";
+    break;
+  }
+  var f = diaSemana +", " +dia+ " de "+mes+" del "+ anio+", a las "+hora;
+  return f;
+}
 exports.search = function(req, res) {  
   var emps = [];
   var param = req.body.search;
