@@ -72,12 +72,12 @@ body
 									div(class="small-4 medium-4 large-4 columns")
 										label Teléfono
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="text" placeholder="Teléfono" pattern="[0-9]{10}" class="radio" style="height: 35px;" name="telefono" value=userModificar.telefono)
+										input(type="text" title="Telefono de 8 a 10 digitos " placeholder="Teléfono" pattern="[0-9]{8,10}" class="radio" style="height: 35px;" name="telefono" value=userModificar.telefono)
 								div(class="row")
 									div(class="small-4 medium-4 large-4 columns")
 										label E-Mail
 									div(class="small-8 medium-8 large-8 columns")
-										input(type="email" placeholder="Dirección de Correo" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="radio" style="height: 35px;" placeholder="E-Mail" name="email"  value=userModificar.email)
+										input(type="text" title="Usuario@dominio.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="radio" style="height: 35px;" placeholder="E-Mail" name="email"  value=userModificar.email)
 								
 								div(class="row")
 										div(class="small-3 medium-3 large-3 columns")

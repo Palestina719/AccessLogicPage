@@ -71,12 +71,12 @@ html(lang="es")
 										div(class="small-3 medium-3 large-3 columns")
 											label Teléfono
 										div(class="small-7 medium-7 large-8 columns")
-											input(type="text" placeholder="Teléfono" name="telefono" pattern="[0-9]{10}" required class="radio" style="height: 35px;")
+											input(type="text" title="Telefono de 8 a 10 digitos" placeholder="Teléfono" name="telefono" pattern="[0-9]{8,10}" required class="radio" style="height: 35px;")
 									div(class="row")
 										div(class="small-3 medium-3 large-3 columns")
 											label E-Mail
 										div(class="small-7 medium-7 large-8 columns")
-											input(type="email" placeholder="Dirección de Correo" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" name="email" required class="radio" style="height: 35px;")
+											input(type="text" title="Usuario@dominio.com" placeholder="E-Mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" name="email" required class="radio" style="height: 35px;")
 									div(class="row")
 										div(class="small-3 medium-3 large-3 columns")
 											label Fecha de Nacimiento
