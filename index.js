@@ -98,21 +98,23 @@ routes = require('./routes')(app,router,controllers, passport);
 /*
  * Launch Server
  */
-database(conf.db, conf[conf.db], mongoose, function(err){
+database(conf, mongoose, function(err){
 	if(err){
 		console.log('ERROR: connecting to Database. ' + err);
 	}
-	http.createServer(app).listen(http_port, function(){
-		console.log('HTTP server listening on port %s in %s mode', http_port, app.get('env'));
-	}); 
-	if ( cer != '' && key != '')
-	{		
-		https.createServer({
-			key : fs.readFileSync(key),
-			cert : fs.readFileSync(cer)
-		},app).listen(https_port, function(){
-			console.log('HTTPS server listening on port %s in %s mode', https_port, app.get('env'));
+	else{
+		http.createServer(app).listen(http_port, function(){
+			console.log('HTTP server listening on port %s in %s mode', http_port, app.get('env'));
 		}); 
+		if ( cer != '' && key != '')
+		{		
+			https.createServer({
+				key : fs.readFileSync(key),
+				cert : fs.readFileSync(cer)
+			},app).listen(https_port, function(){
+				console.log('HTTPS server listening on port %s in %s mode', https_port, app.get('env'));
+			}); 
+		}
 	}
 });
 

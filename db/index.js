@@ -2,7 +2,7 @@
  * database.js
  */
 
-module.exports = function (type, settings,mongoose,cb) {
+module.exports = function (settings,mongoose,cb) {
     /*
      * Initialize required modules
     */
@@ -11,13 +11,17 @@ module.exports = function (type, settings,mongoose,cb) {
     /*
      * Vars
      */
-    var collection = settings.collection;
+    var motordb     = settings.db,
+        collection  = settings.mongodb.collection,
+        host        = settings.mongodb.host,
+        port        = settings.mongodb.port;
 
-    console.log('Specified motor database : ' + type);
+    console.log('Specified motor database : ' + motordb);
 
-    mongoose.connect('mongodb://localhost:27017/'+ collection, function(err, res) {  
+    mongoose.Promise = global.Promise;
+    mongoose.connect('mongodb://'+host+":"+port+"/"+ collection, function(err, res) {  
         if(err) {
-            cb(true);
+            cb(err);
         }
         else{
             console.log('Connected to the database', collection);

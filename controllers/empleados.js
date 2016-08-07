@@ -23,6 +23,7 @@ exports.calendar = function(req, res) {
   });
 };
 
+//GET - Obtiene la vista de los horarios
 exports.horario = function(req, res) {  
   findUserActive(req, function(err, empleado){
     if (err)
@@ -31,6 +32,7 @@ exports.horario = function(req, res) {
   });
 };
 
+//GET - Obtiene la vista de los usuarios registrados
 exports.users = function(req, res) {  
   var emps = [];
   findUserActive(req, function(err, empleado){
@@ -54,22 +56,29 @@ exports.users = function(req, res) {
   });
 };
 
+//GET - Obtiene la vista para agregar un usuario
 exports.addUserView = function(req, res) {  
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
-    Tarjetas.find({"estado":"inactivo"},function(err, tarj){
-      if(err)
-        res.send(500, err.message);
-      TEmpleados.find({}, function(err, tEmps){
+    if(empleado.isAdmin){
+      Tarjetas.find({"estado":"inactivo"},function(err, tarj){
         if(err)
           res.send(500, err.message);
-        res.status(200).render('addUser',{user: empleado, cards:tarj, puestos:tEmps});
+        TEmpleados.find({}, function(err, tEmps){
+          if(err)
+            res.send(500, err.message);
+          res.status(200).render('addUser',{user: empleado, cards:tarj, puestos:tEmps});
+        });
       });
-    });
+    }
+    else {
+      res.redirect('/');
+    }
   });
 };
 
+//GET - Obtiene la vista para mostrar las incidencias
 exports.incidencias = function(req, res) {  
   findUserActive(req, function(err, empleado){
     if (err)
@@ -101,17 +110,26 @@ exports.incidencias = function(req, res) {
   });
 };
 
+//Funcion para dar formato a una fecha
 function formatDate(fecha){
-  var mes = fecha.getMonth() +1;     // 11
-  var dia = fecha.getDate();      // 29
-  var anio = fecha.getFullYear();
-  var diaSemana = fecha.getDay();
-  var h = fecha.getHours();
-  var m = fecha.getMinutes();
-  var s = fecha.getSeconds();
-  var hora = h+":"+m+":"+s;
+  var mes = fecha.getUTCMonth() +1;     // 11
+  var dia = fecha.getUTCDate();      // 29
+  var anio = fecha.getUTCFullYear();
+  var diaSemana = fecha.getUTCDay();
+  var h = fecha.getUTCHours();
+  var m = fecha.getUTCMinutes();
+  var s = fecha.getUTCSeconds();
+  
   if(dia > 0 && dia < 10)
     dia = "0"+dia;
+  if(h >= 0 && h < 10)
+    h = "0"+h;
+  if(m >= 0 && m < 10)
+    m = ""+0+m;
+  if(s >= 0 && s < 10)
+    s = "0"+s;
+  var hora = h+":"+m+":"+s;
+
   switch(diaSemana){
     case 0: 
     diaSemana = "Domingo";
@@ -176,6 +194,7 @@ function formatDate(fecha){
   var f = diaSemana +", " +dia+ " de "+mes+" del "+ anio+", a las "+hora;
   return f;
 }
+//Busqueda
 exports.search = function(req, res) {  
   var emps = [];
   var param = req.body.search;
@@ -183,55 +202,66 @@ exports.search = function(req, res) {
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
-    findUserByName(param, function(err,emps){
-    //findAllEmpleados(function(err,emps){
-      if(err){
-        console.log(err);
-        res.send(500, err.message);
-      }
-      //console.log(emps);
-      if(emps == null){
-        res.status(200).render('list_users',{user: empleado, users:emps,message: req.flash('message'), messageNoUsers : true, messageLogin:false}); 
-      }
-      else{
-        res.status(200).render('list_users',{user: empleado, users:emps});   
-      }
-    });
+    if(empleado.isAdmin){
+      findUserByName(param, function(err,emps){
+      //findAllEmpleados(function(err,emps){
+        if(err){
+          console.log(err);
+          res.send(500, err.message);
+        }
+        //console.log(emps);
+        if(emps == null){
+          res.status(200).render('list_users',{user: empleado, users:emps,message: req.flash('message'), messageNoUsers : true, messageLogin:false}); 
+        }
+        else{
+          res.status(200).render('list_users',{user: empleado, users:emps});   
+        }
+      });
+    }
+    else {
+      res.redirect('/');
+    }
   });
 };
 
+//GET - Obtiene la vista para actualizar un usuario
 exports.updateEmpleadoView = function(req, res) {
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
-    var id = req.params.id;
-    findUserById(id, function(err, empleadoModSend){
-      if (err)
-        res.send(500, err.message);
-      
-      var fecha = new Date(empleadoModSend.fechaNac);
-      var mes = fecha.getMonth() +1;     // 11
-      var dia = fecha.getDate()+1;      // 29
-      var anio = fecha.getFullYear();
-      if(dia > 0 && dia < 10)
-        dia = "0"+dia;
-      if(mes > 0 && mes < 10)
-        mes = "0"+mes;
-      //anio="19"+anio;
-      fecha = anio +"-"+mes+"-"+dia;
-      empleadoModSend.fNac = fecha;
-      findTipoEmpleados(function(err,tEmps){
-         if(err)
+    if(empleado.isAdmin){
+      var id = req.params.id;
+      findUserById(id, function(err, empleadoModSend){
+        if (err)
           res.send(500, err.message);
-        findCards(function(err, tarj){
-          if(err)
+        
+        var fecha = new Date(empleadoModSend.fechaNac);
+        var mes = fecha.getMonth() +1;     // 11
+        var dia = fecha.getDate()+1;      // 29
+        var anio = fecha.getFullYear();
+        if(dia > 0 && dia < 10)
+          dia = "0"+dia;
+        if(mes > 0 && mes < 10)
+          mes = "0"+mes;
+        //anio="19"+anio;
+        fecha = anio +"-"+mes+"-"+dia;
+        empleadoModSend.fNac = fecha;
+        findTipoEmpleados(function(err,tEmps){
+           if(err)
             res.send(500, err.message);
-          tarj.push(empleadoModSend.iTarjeta);
-          //console.log(empleadoModSend);
-          res.status(200).render('modificarEmpleado',{userModificar: empleadoModSend, user:empleado, cards: tarj, puestos:tEmps});
+          findCards(function(err, tarj){
+            if(err)
+              res.send(500, err.message);
+            tarj.push(empleadoModSend.iTarjeta);
+            //console.log(empleadoModSend);
+            res.status(200).render('modificarEmpleado',{userModificar: empleadoModSend, user:empleado, cards: tarj, puestos:tEmps});
+          })
         })
-      })
-    });
+      });
+    }
+    else {
+      res.redirect('/');
+    }
   });
 };
 
@@ -375,136 +405,154 @@ function findCardById(id, cb){
 }
 //POST - Guarda un empleado
 exports.addEmpleado = function(req, res) {
-  var serieTarjeta = req.body.serieTarjeta;
-  var tipoEmpleado = req.body.tEmpleado;
-  var isAdmin = req.body.isAdmin;
-  if(isAdmin == "No")
-    isAdmin = false;
-  else
-    isAdmin = true;
-  findCardBySerie(serieTarjeta, function(err, card){
-    if(err)
+   findUserActive(req, function(err, empleado){
+    if (err)
       res.send(500, err.message);
-    findTipoEmpleadosByName(tipoEmpleado, function(err, tEmp){
-      if(err)
-        res.send(500, err.message);
-      //console.log(req.body);
-      var l = new Logins({
-        usuario   : req.body.username,
-        password  : req.body.password
-      });
-      l.save(function(err){
+    if(empleado.isAdmin){
+      var serieTarjeta = req.body.serieTarjeta;
+      var tipoEmpleado = req.body.tEmpleado;
+      var isAdmin = req.body.isAdmin;
+      if(isAdmin == "No")
+        isAdmin = false;
+      else
+        isAdmin = true;
+      findCardBySerie(serieTarjeta, function(err, card){
         if(err)
           res.send(500, err.message);
-        card.estado = "activo";
-        card.save(function(err, card){
+        findTipoEmpleadosByName(tipoEmpleado, function(err, tEmp){
           if(err)
             res.send(500, err.message);
-          var empleado = new Empleados({
-            nombre    : req.body.nombre,
-            apPaterno : req.body.apPaterno,
-            apMaterno : req.body.apMaterno,
-            direccion : req.body.direccion,
-            telefono  : req.body.telefono,
-            email     : req.body.email,
-            fechaNac  : req.body.fechaNac,
-            tEmpleado : tEmp._id,
-            iLogin    : l._id,
-            iTarjeta  : card._id,
-            isAdmin   : isAdmin
+          //console.log(req.body);
+          var l = new Logins({
+            usuario   : req.body.username,
+            password  : req.body.password
           });
-          //console.log(empleado);
-          empleado.save(function(err){
-            if(err){
-              console.log("hubo errror ", err);
+          l.save(function(err){
+            if(err)
               res.send(500, err.message);
-            }
-            res.redirect("/users");
+            card.estado = "activo";
+            card.save(function(err, card){
+              if(err)
+                res.send(500, err.message);
+              var empleado = new Empleados({
+                nombre    : req.body.nombre,
+                apPaterno : req.body.apPaterno,
+                apMaterno : req.body.apMaterno,
+                direccion : req.body.direccion,
+                telefono  : req.body.telefono,
+                email     : req.body.email,
+                fechaNac  : req.body.fechaNac,
+                tEmpleado : tEmp._id,
+                iLogin    : l._id,
+                iTarjeta  : card._id,
+                isAdmin   : isAdmin
+              });
+              //console.log(empleado);
+              empleado.save(function(err){
+                if(err){
+                  console.log("hubo errror ", err);
+                  res.send(500, err.message);
+                }
+                res.redirect("/users");
+              });
+            });
           });
         });
       });
-    });
+    }
+    else{
+      res.redirect("/");
+    }
   });
 }
 
 //PUT - Actualiza un empleado existente
-exports.updateEmpleado = function(req, res) {  
-  var id = req.params.id;
-  var tipoEmpleado = req.body.tEmpleado;
-  var serieCard = req.body.serieTarjeta;
-  var username = req.body.username;
-  var password = req.body.password;
-  var isAdmin = req.body.isAdmin;
-  if(isAdmin == "No")
-    isAdmin = false;
-  else
-    isAdmin = true;
-  findUserById(id, function(err, user){
-    var idLogin = user.iLogin._id;
-    var idTarjeta = user.iTarjeta._id;
-    findTipoEmpleadosByName(tipoEmpleado, function(err, tipoEmp){
-      if(err)
-          return res.status(500).send(err.message);
-      var idTipoEmpleado = tipoEmp._id;
-      findCardBySerie(serieCard, function(err, card){ //tarjeta elegida
-        if(err)
-          return res.status(500).send(err.message);
-        var idCard = card._id;
-        findCardById(idTarjeta, function(err, tarj){ //tarjeta actual user
+exports.updateEmpleado = function(req, res) {
+   findUserActive(req, function(err, empleado){
+    if (err)
+      res.send(500, err.message);
+    if(empleado.isAdmin){  
+      var id = req.params.id;
+      var tipoEmpleado = req.body.tEmpleado;
+      var serieCard = req.body.serieTarjeta;
+      var username = req.body.username;
+      var password = req.body.password;
+      var isAdmin = req.body.isAdmin;
+      if(isAdmin == "No")
+        isAdmin = false;
+      else
+        isAdmin = true;
+      findUserById(id, function(err, user){
+        var idLogin = user.iLogin._id;
+        var idTarjeta = user.iTarjeta._id;
+        findTipoEmpleadosByName(tipoEmpleado, function(err, tipoEmp){
           if(err)
               return res.status(500).send(err.message);
-          findLoginById(idLogin, function(err,login){
+          var idTipoEmpleado = tipoEmp._id;
+          findCardBySerie(serieCard, function(err, card){ //tarjeta elegida
             if(err)
               return res.status(500).send(err.message);
-            //console.log(user, isAdmin);
-            user.nombre = req.body.nombre;
-            user.apPaterno = req.body.apPaterno;
-            user.apMaterno = req.body.apMaterno;
-            user.direccion = req.body.direccion;
-            user.telefono = req.body.telefono;
-            user.email = req.body.email;
-            user.fechaNac = req.body.fechaNac;
-            user.tEmpleado = idTipoEmpleado;
-            user.isAdmin = isAdmin;
-            user.iTarjeta = idCard;
-            if(String(idTarjeta) !=  String(idCard))
-              tarj.estado = "inactivo";
-            else
-             tarj.estado = "activo"; 
-            card.estado = "activo";
-            login.usuario = username;
-            login.password = password;
-            login.save(function(err){
+            var idCard = card._id;
+            findCardById(idTarjeta, function(err, tarj){ //tarjeta actual user
               if(err)
-                return res.status(500).send(err.message);
-              user.save(function(err){
+                  return res.status(500).send(err.message);
+              findLoginById(idLogin, function(err,login){
                 if(err)
                   return res.status(500).send(err.message);
-                card.save(function(err){
+                //console.log(user, isAdmin);
+                user.nombre = req.body.nombre;
+                user.apPaterno = req.body.apPaterno;
+                user.apMaterno = req.body.apMaterno;
+                user.direccion = req.body.direccion;
+                user.telefono = req.body.telefono;
+                user.email = req.body.email;
+                user.fechaNac = req.body.fechaNac;
+                user.tEmpleado = idTipoEmpleado;
+                user.isAdmin = isAdmin;
+                user.iTarjeta = idCard;
+                if(String(idTarjeta) !=  String(idCard))
+                  tarj.estado = "inactivo";
+                else
+                 tarj.estado = "activo"; 
+                card.estado = "activo";
+                login.usuario = username;
+                login.password = password;
+                login.save(function(err){
                   if(err)
                     return res.status(500).send(err.message);
-                  tarj.save(function(err){
+                  user.save(function(err){
                     if(err)
                       return res.status(500).send(err.message);
-                    //console.log(req.user.id, user._id);
-                    if(req.user._id == user.iLogin._id){
-                      if((user.iLogin.usuario != username) || (user.iLogin.password != password)){
-                        req.logout();
-                        res.redirect('/');
-                      }
-                      else
-                        res.redirect("/users");
-                    }
-                    else
-                      res.redirect("/users");
+                    card.save(function(err){
+                      if(err)
+                        return res.status(500).send(err.message);
+                      tarj.save(function(err){
+                        if(err)
+                          return res.status(500).send(err.message);
+                        //console.log(req.user.id, user._id);
+                        if(req.user._id == user.iLogin._id){
+                          if((user.iLogin.usuario != username) || (user.iLogin.password != password)){
+                            req.logout();
+                            res.redirect('/');
+                          }
+                          else
+                            res.redirect("/users");
+                        }
+                        else
+                          res.redirect("/users");
+                      });
+                    });
                   });
                 });
               });
-            });
+            });     
           });
-        });     
+        });
       });
-    });
+    }
+    else{
+      res.redirect("/");
+    }
   });
 };
 
@@ -513,36 +561,41 @@ exports.deleteEmpleado = function(req, res) {
   findUserActive(req, function(err, empleado) {
     if(err)
       res.send(500, err.message);
-    if( req.session.idUserActive == req.params.id){
-      req.session.errDel = true;
-      return res.redirect('/users');
-    }
-    req.session.errDel=false;
-    var idL = req.params.id;
+    if(empleado.isAdmin){
+      if( req.session.idUserActive == req.params.id){
+        req.session.errDel = true;
+        return res.redirect('/users');
+      }
+      req.session.errDel=false;
+      var idL = req.params.id;
 
-    findUserById(idL, function(err, user){
-      if(err)
-        res.send(500, err.message);
-      findLoginById(user.iLogin._id, function(err, login){
+      findUserById(idL, function(err, user){
         if(err)
           res.send(500, err.message);
-        login.remove(function(err){
+        findLoginById(user.iLogin._id, function(err, login){
           if(err)
             res.send(500, err.message);
-          findCardById(user.iTarjeta._id, function(err, card){
-            card.estado = "inactivo";
-            card.save(function(err){
-              if(err)
-                res.send(500, err.message);
-              user.remove(function(err) {
+          login.remove(function(err){
+            if(err)
+              res.send(500, err.message);
+            findCardById(user.iTarjeta._id, function(err, card){
+              card.estado = "inactivo";
+              card.save(function(err){
                 if(err)
-                  return res.status(500).send(err.message);
-                res.redirect("/users");
-              });
+                  res.send(500, err.message);
+                user.remove(function(err) {
+                  if(err)
+                    return res.status(500).send(err.message);
+                  res.redirect("/users");
+                });
+              })
             })
-          })
+          });
         });
       });
-    });
+    }
+    else{
+      res.redirect("/");
+    }
   });
 };
