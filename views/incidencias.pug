@@ -56,6 +56,10 @@ body
 										td(class="text-center")=val.iEmpleado.nombre + " "+ val.iEmpleado.apPaterno+" "+ val.iEmpleado.apMaterno 
 										td(class="text-center")=val.idTIncidencia.nombre
 										td(class="text-center")=val.date
+						
+						div(class="small-12 medium-12 large-12 text-center")
+							form(method='POST', action='/reporte-incidencias' target='_blank')
+								button(type='submit' class="button radio") Exportar a PDF
 									
 									
 	div(class="small-12 medium-12 large-12 verde columns" id="footer")

@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var ObjectId = require('mongoose').Types.ObjectId; 
 var Regex = require("regex");
 var async = require('async');
+var PDFDocument = require('pdfkit');
+var fs = require('fs');
 //Models
 var Entradas     = mongoose.model('entradas'),
     Eventos      = mongoose.model('eventos'),
@@ -223,6 +225,126 @@ exports.search = function(req, res) {
     }
   });
 };
+
+//POST - Generar un reporte de incidencias
+exports.report = function(req,res){
+  findUserActive(req, function(err, empleado){
+    if (err)
+      res.send(500, err.message);
+    var fechaHoy = new Date();
+    fechaHoy = fechaHoy.toLocaleDateString();
+   
+    var doc = new PDFDocument;
+    doc.pipe(fs.createWriteStream('output.pdf'));
+    doc.pipe(res);
+    //Header (logo y titulo)
+    doc
+    .image('public/img/logoamerica.png',25, 25, {width: 100})
+    .fontSize(25)
+    .text('Reporte de Incidencias', 150, 40)
+    .fontSize(20)
+    .text(fechaHoy,150,70);
+    if(empleado.isAdmin){
+     var xNombre = 40;
+     var yNombre = 180;
+     var xTipoI = 230;
+     var yTipoI = 180;
+     var xFechaHora = 400;
+     var yFechaHora = 180;
+      //Se muestra un titulo general
+      doc
+      .fontSize(20)
+      .text("Incidencias de todos los empleados", 150, 100)
+      .fontSize(15)
+      .text("Nombre",xNombre,yNombre)
+      .text("Tipo de Incidencia",xTipoI,yTipoI)
+      .text("Fecha y Hora",xFechaHora,yFechaHora);
+
+      //if(empleado.isAdmin){
+        findIncidencias( function(err, incidencias){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<incidencias.length; x++){
+            var fecha = new Date(incidencias[x].fecha);
+            fecha = formatDate(fecha);
+            incidencias[x].date=fecha;
+            yNombre += 30;
+            yTipoI += 30;
+            yFechaHora += 30;
+            doc
+            .fontSize(10)
+            .text(incidencias[x].iEmpleado.nombre + " " +incidencias[x].iEmpleado.apPaterno + " "+ incidencias[x].iEmpleado.apMaterno, xNombre, yNombre )
+            .text(incidencias[x].idTIncidencia.nombre, xTipoI, yTipoI )
+            .text(fecha, xFechaHora, yFechaHora )
+          }      
+
+          doc.end();
+          //res.status(200).render('incidencias',{user: empleado, incidencias: incidencias}); 
+
+        });
+      //}
+      // else{
+        
+      // }
+      
+    }
+    else{
+      var xNombre = 40;
+      var yNombre = 180;
+      var xTipoI = 40;
+      var yTipoI = 180;
+      var xFechaHora = 210;
+      var yFechaHora = 180;
+      //Se muestra el nombre del empleado
+      doc
+      .fontSize(20)
+      .text("Incidencias de: " , 150, 100)
+      .fontSize(23)
+      .text(empleado.nombre +" "+empleado.apPaterno+" "+empleado.apMaterno, 300,100)
+      .fontSize(15)
+      .text("Tipo de Incidencia",xTipoI,yTipoI)
+      .text("Fecha y Hora",xFechaHora,yFechaHora);
+      findIncidenciasByUserId(empleado._id, function(err, incidenciaInd){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<incidenciaInd.length; x++){
+            var fecha = new Date(incidenciaInd[x].fecha);
+            fecha = formatDate(fecha);
+            incidenciaInd[x].date=fecha;
+            yTipoI += 30;
+            yFechaHora += 30;
+            doc
+            .fontSize(10)
+            .text(incidenciaInd[x].idTIncidencia.nombre, xTipoI, yTipoI )
+            .text(fecha, xFechaHora, yFechaHora )
+          }      
+          doc.end();
+        })
+      
+    }
+    
+
+    // // Dibujar un triángulo
+    // doc.save()
+    // .moveTo(100, 150)
+    // .lineTo(100, 250)
+    // .lineTo(200, 250)
+    // .fill("#FF3300");
+
+    // // Dibujar un círculo       
+    // doc.circle(280, 200, 50)
+    // .fill("#6600FF");
+
+    // // Path SVG
+    // doc.scale(0.6)
+    // .translate(470, 130)
+    // .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
+    // .fill('green', 'even-odd')
+    // .restore();
+
+    //doc.end();
+  });
+}
 
 //GET - Obtiene la vista para actualizar un usuario
 exports.updateEmpleadoView = function(req, res) {

@@ -97,6 +97,24 @@ module.exports = function (app,router,ctrl,passport){
 		ctrlEmpleados.addEmpleado(req,res);
 	});
 
+	//Post reporte-incidencias
+	router.post("/reporte-incidencias", function (req, res, next) {
+		if (req.isAuthenticated())
+			return next();
+		res.redirect('/');
+	} , function(req, res){
+		ctrlEmpleados.report(req,res);
+	});
+
+	//GET reporte-incidencias
+	router.get("/reporte-incidencias", function (req, res, next) {
+		if (req.isAuthenticated())
+			return next();
+		res.redirect('/');
+	} , function(req, res){
+		res.redirect('/');
+	});
+
 	//Delete user
 	router.delete('/users/:id', function (req, res,next) {
 		if (req.isAuthenticated())
