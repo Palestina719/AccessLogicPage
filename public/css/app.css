@@ -19,6 +19,11 @@
 	width:100%;
 	
   }
+  .contlogin{
+	margin-top: 95px;
+	padding-bottom: 45px;
+	height: 400px;	
+}
   #calendar{
   	width:90%;
     height: 900px !important;
@@ -26,52 +31,27 @@
   	padding-top:30px; 
   	font-size:12px;
   }
+  #BUsers1{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 51% 190px;
+}
+#Blogin{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 50% 190px;
+}
+#BUsers{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 60% 240px;
+}
 }
 
 @media (max-width: 1600px) {
  .me{
 	background-color: #006633;
 	height: 785px;
-}
-  #workarea{
-  	overflow-y:scroll; 
-	height:785px !important; 
-	width:100%;
-	
-  }
-  #calendar{
-  	width:90%;
-    height: 900px !important;
-  	margin:0 auto; 
-  	padding-top:90px; 
-  	font-size:12px;
-  }
-}
-
-@media (max-width: 1366px) {
-  #workarea{
-  	overflow-y:scroll; 
-	height:785px; 
-	width:100%;
-	
-  }
-  #calendar{
-  	width:80%;
-/*  	max-width:850px;*/
-  	margin:0 auto; 
-  	padding-top:30px; 
-  	font-size:12px;
-  }
-  .me{
-	background-color: #006633;
-	height: 788px;
-}
-}
-
-body{
-	font-family: Arial;
-
-
 }
 #Blogin{
 	background-image: url("../img/ss.png");
@@ -83,11 +63,78 @@ body{
 	background-repeat: no-repeat;
 	background-position: 60% 125px;
 }
-#BUsers1{
+  #workarea{
+  	overflow-y:scroll; 
+	height:785px !important; 
+	width:100%;
+	
+  }
+  .contlogin{
+	margin-top: 35px;
+	padding-bottom: 45px;
+}
+  #calendar{
+  	width:90%;
+    height: 900px !important;
+  	margin:0 auto; 
+  	padding-top:90px; 
+  	font-size:12px;
+  }
+  #BUsers1{
 	background-image: url("../img/ss.png");
 	background-repeat: no-repeat;
 	background-position: 51% 110px;
 }
+}
+
+@media (max-width: 1366px) {
+  #workarea{
+  	overflow-y:scroll; 
+	height:785px; 
+	width:100%;
+	
+  }
+  #BUsers1{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 51% 110px;
+}
+#Blogin{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 50% 110px;
+}
+#BUsers{
+	background-image: url("../img/ss.png");
+	background-repeat: no-repeat;
+	background-position: 60% 125px;
+}
+  #calendar{
+  	width:80%;
+/*  	max-width:850px;*/
+  	margin:0 auto; 
+  	padding-top:30px; 
+  	font-size:12px;
+  }
+  .me{
+	background-color: #006633;
+	height: 788px;
+}
+.contlogin{
+	margin-top: 35px;
+	padding-bottom: 45px;
+	height: 400px;	
+}
+}
+
+
+body{
+	font-family: Arial;
+
+
+}
+
+
 
 .verde{
 	background-color: #0AA257;
@@ -124,10 +171,7 @@ body{
 .negrita{
 	font-weight:bold;
 }
-.contlogin{
-	margin-top: 35px;
-	padding-bottom: 45px;	
-}
+
 .leyenda{
 	padding: 12px;
 	color: white;
@@ -135,7 +179,7 @@ body{
 	text-align: center;
 }
 .inputs{
-	margin-top: 20px;
+	margin-top: 40px;
 }
 .foot{
 	color: white;
