@@ -260,33 +260,24 @@ exports.report = function(req,res){
       .text("Tipo de Incidencia",xTipoI,yTipoI)
       .text("Fecha y Hora",xFechaHora,yFechaHora);
 
-      //if(empleado.isAdmin){
-        findIncidencias( function(err, incidencias){
-          if(err)
-            res.send(500, err.message);
-          for(var x=0; x<incidencias.length; x++){
-            var fecha = new Date(incidencias[x].fecha);
-            fecha = formatDate(fecha);
-            incidencias[x].date=fecha;
-            yNombre += 30;
-            yTipoI += 30;
-            yFechaHora += 30;
-            doc
-            .fontSize(10)
-            .text(incidencias[x].iEmpleado.nombre + " " +incidencias[x].iEmpleado.apPaterno + " "+ incidencias[x].iEmpleado.apMaterno, xNombre, yNombre )
-            .text(incidencias[x].idTIncidencia.nombre, xTipoI, yTipoI )
-            .text(fecha, xFechaHora, yFechaHora )
-          }      
-
-          doc.end();
-          //res.status(200).render('incidencias',{user: empleado, incidencias: incidencias}); 
-
-        });
-      //}
-      // else{
-        
-      // }
-      
+      findIncidencias( function(err, incidencias){
+        if(err)
+          res.send(500, err.message);
+        for(var x=0; x<incidencias.length; x++){
+          var fecha = new Date(incidencias[x].fecha);
+          fecha = formatDate(fecha);
+          incidencias[x].date=fecha;
+          yNombre += 30;
+          yTipoI += 30;
+          yFechaHora += 30;
+          doc
+          .fontSize(10)
+          .text(incidencias[x].iEmpleado.nombre + " " +incidencias[x].iEmpleado.apPaterno + " "+ incidencias[x].iEmpleado.apMaterno, xNombre, yNombre )
+          .text(incidencias[x].idTIncidencia.nombre, xTipoI, yTipoI )
+          .text(fecha, xFechaHora, yFechaHora )
+        }      
+        doc.end();
+      });
     }
     else{
       var xNombre = 40;
@@ -322,27 +313,6 @@ exports.report = function(req,res){
         })
       
     }
-    
-
-    // // Dibujar un triángulo
-    // doc.save()
-    // .moveTo(100, 150)
-    // .lineTo(100, 250)
-    // .lineTo(200, 250)
-    // .fill("#FF3300");
-
-    // // Dibujar un círculo       
-    // doc.circle(280, 200, 50)
-    // .fill("#6600FF");
-
-    // // Path SVG
-    // doc.scale(0.6)
-    // .translate(470, 130)
-    // .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
-    // .fill('green', 'even-odd')
-    // .restore();
-
-    //doc.end();
   });
 }
 
