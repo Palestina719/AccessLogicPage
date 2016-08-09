@@ -22,16 +22,16 @@ body
 			div(class="small-5 small-offset-2 medium-5 medium-offset-2 large-5 large-offset-2 foto")
 				img(src="img/foto.png")
 			div(class="small-12 medium-12 large-12 columns user")
-				p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
+				//p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
 			div(class="menu large-12 row expanded item")
 				li
 					a(href="/calendario") Calendario
 			div(class="menu large-12 row expanded item")
 				li
 					a(href="/horario") Horario
-			if user.isAdmin
-				div(class="menu large-12 row expanded item")
-					li
+			//if user.isAdmin
+			div(class="menu large-12 row expanded item")
+				li
 						a(href="/users") Usuarios		
 			div(class="menu large-12 row expanded item")
 				li
@@ -52,9 +52,9 @@ body
 							thead
 								tr(class="colorCell")
 									th(width="100" class="encT") Nombre
-									th(width="100" class="encT") Tipo de incidencia
-									th(width="150" class="encT") Fecha y Hora
-								each val, index in incidencias
+									th(width="100" class="encT") Hora Entrada
+									th(width="150" class="encT") Hora salida
+								//each val, index in incidencias
 									tr
 										td(class="text-center")=val.iEmpleado.nombre + " "+ val.iEmpleado.apPaterno+" "+ val.iEmpleado.apMaterno 
 										td(class="text-center")=val.idTIncidencia.nombre

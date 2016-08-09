@@ -12,7 +12,10 @@
 			events: [
 			{
 				title: 'Revision de proyecto',
-				start: '2016-08-01'
+				start: '2016-08-01',
+				title: 'Vacaciones',
+				start: '2016-08-10',
+				end: '2016-08-18'
 			}
 			]
 		});
