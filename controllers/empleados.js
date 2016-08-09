@@ -232,7 +232,7 @@ exports.report = function(req,res){
     if (err)
       res.send(500, err.message);
     var fechaHoy = new Date();
-    fechaHoy = fechaHoy.toLocaleDateString();
+    fechaHoy = formatDate(fechaHoy);
    
     var doc = new PDFDocument;
     doc.pipe(fs.createWriteStream('output.pdf'));
