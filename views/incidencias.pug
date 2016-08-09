@@ -54,16 +54,17 @@ body
 									th(width="100" class="encT") Nombre
 									th(width="100" class="encT") Tipo de incidencia
 									th(width="150" class="encT") Fecha y Hora
-								if users == null
+								if incidencias == null
 									tr
-										td(class="text-center" colspan="6") ¡Enhorabuena! Has estado a tiempo todos los días.
+										td(class="text-center" colspan="3") ¡Enhorabuena! Has estado a tiempo todos los días.
 								else
 									each val, index in incidencias
 										tr
 											td(class="text-center")=val.iEmpleado.nombre + " "+ val.iEmpleado.apPaterno+" "+ val.iEmpleado.apMaterno 
 											td(class="text-center")=val.idTIncidencia.nombre
 											td(class="text-center")=val.date
-									div(class="small-12 medium-12 large-12 text-center")
+						if incidencias != null
+							div(class="small-12 medium-12 large-12 text-center")
 										form(method='POST', action='/reporte-incidencias' target='_blank')
 											button(type='submit' class="button radio") Exportar a PDF
 									

@@ -115,6 +115,33 @@ module.exports = function (app,router,ctrl,passport){
 		res.redirect('/');
 	});
 
+	//GET reporte-asistencias
+	router.get("/reporte-asistencias", function (req, res, next) {
+		if (req.isAuthenticated())
+			return next();
+		res.redirect('/');
+	} , function(req, res){
+		res.redirect('/');
+	});
+
+	//POST - reporte-asistencias
+	router.post("/reporte-asistencias", function (req, res, next) {
+		if (req.isAuthenticated())
+			return next();
+		res.redirect('/');
+	} , function(req, res){
+		ctrlEmpleados.reportAsistencias(req,res);
+	});
+
+	//GET entradas-salidas
+	router.get("/entradas-salidas", function (req, res, next) {
+		if (req.isAuthenticated())
+			return next();
+		res.redirect('/');
+	} , function(req, res){
+		ctrlEmpleados.entradasSalidas(req,res);
+	});
+
 	//Delete user
 	router.delete('/users/:id', function (req, res,next) {
 		if (req.isAuthenticated())

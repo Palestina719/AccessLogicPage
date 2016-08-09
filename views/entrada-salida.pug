@@ -22,17 +22,17 @@ body
 			div(class="small-5 small-offset-2 medium-5 medium-offset-2 large-5 large-offset-2 foto")
 				img(src="img/foto.png")
 			div(class="small-12 medium-12 large-12 columns user")
-				//p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
+				p #{user.nombre} #{user.apPaterno} #{user.apMaterno}
 			div(class="menu large-12 row expanded item")
 				li
 					a(href="/calendario") Calendario
 			div(class="menu large-12 row expanded item")
 				li
 					a(href="/horario") Horario
-			//if user.isAdmin
-			div(class="menu large-12 row expanded item")
-				li
-						a(href="/users") Usuarios		
+			if user.isAdmin
+				div(class="menu large-12 row expanded item")
+					li
+							a(href="/users") Usuarios		
 			div(class="menu large-12 row expanded item")
 				li
 					a(href="/incidencias") Incidencias
@@ -45,23 +45,32 @@ body
 		div(class="small-10 medium-10 large-10 columns")
 			div(id="workarea")
 				div(class="small-10 small-offset-1 medium-10 medium-offset-1 large-10 large-offset-1 titOptions columns")
-					p(class="negrita") Incidencias
+					p(class="negrita") Registro diario
 				div(class="small-12 medium-12 large-12 columns")
 					div(class="small-10 smll-offset-2 medium-10 medium-offset-2 large-10 large-offset-1 columns ")
 						table(class="stack")
 							thead
 								tr(class="colorCell")
-									th(width="100" class="encT") Nombre
+									if user.isAdmin
+										th(width="100" class="encT") Nombre
 									th(width="100" class="encT") Hora Entrada
 									th(width="150" class="encT") Hora salida
-								//each val, index in incidencias
+								if users == null
 									tr
-										td(class="text-center")=val.iEmpleado.nombre + " "+ val.iEmpleado.apPaterno+" "+ val.iEmpleado.apMaterno 
-										td(class="text-center")=val.idTIncidencia.nombre
-										td(class="text-center")=val.date
+										td(class="text-center" colspan="3") Aún sin registros generados
+								else
+									each val, index in users
+										tr
+											if user.isAdmin
+												td(class="text-center")=val.entrada.iEmpleado.nombre + " "+ val.entrada.iEmpleado.apPaterno+" "+ val.entrada.iEmpleado.apMaterno 
+											td(class="text-center")=val.entradaH
+											if val.salida.horaSalida == null
+												td(class="text-center") No registro salida
+											else
+												td(class="text-center")=val.salidaH
 						
 						div(class="small-12 medium-12 large-12 text-center")
-							form(method='POST', action='/reporte-incidencias' target='_blank')
+							form(method='POST', action='/reporte-asistencias' target='_blank')
 								button(type='submit' class="button radio") Exportar a PDF
 									
 									

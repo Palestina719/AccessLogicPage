@@ -3,7 +3,8 @@ exports = module.exports = function(mongoose) {
 	    Schema   = mongoose.Schema;
 
 	var entradas = new Schema({  
-	  horaEntrada:     Date 
+	  horaEntrada:     Date,
+	  iEmpleado : { type: Schema.ObjectId, ref: 'empleados'}, 
 	});
 
 	mongoose.model('entradas', entradas); 

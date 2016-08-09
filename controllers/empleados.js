@@ -112,7 +112,92 @@ exports.incidencias = function(req, res) {
   });
 };
 
-//Funcion para dar formato a una fecha
+//Funcion para dar formato a una fecha sin UTC
+function formatDateSimple(fecha){
+  var mes = fecha.getMonth() +1;     // 11
+  var dia = fecha.getDate();      // 29
+  var anio = fecha.getFullYear();
+  var diaSemana = fecha.getDay();
+  var h = fecha.getHours();
+  var m = fecha.getMinutes();
+  var s = fecha.getSeconds();
+  
+  if(dia > 0 && dia < 10)
+    dia = "0"+dia;
+  if(h >= 0 && h < 10)
+    h = "0"+h;
+  if(m >= 0 && m < 10)
+    m = ""+0+m;
+  if(s >= 0 && s < 10)
+    s = "0"+s;
+  var hora = h+":"+m+":"+s;
+
+  switch(diaSemana){
+    case 0: 
+    diaSemana = "Domingo";
+    break;
+    case 1: 
+    diaSemana = "Lunes";
+    break;
+    case 2: 
+    diaSemana = "Martes";
+    break;
+    case 3: 
+    diaSemana = "Miércoles";
+    break;
+    case 4: 
+    diaSemana = "Jueves";
+    break;
+    case 5: 
+    diaSemana = "Viernes";
+    break;
+    case 6: 
+    diaSemana = "Sábado";
+    break;
+  }
+  switch(mes){
+    case 1: 
+    mes = "Enero";
+    break;
+    case 2: 
+    mes = "Febrero";
+    break;
+    case 3: 
+    mes = "Marzo";
+    break;
+    case 4: 
+    mes = "Abril";
+    break;
+    case 5: 
+    mes = "Mayo";
+    break;
+    case 6: 
+    mes = "Junio";
+    break;
+    case 7: 
+    mes = "Julio";
+    break;
+    case 8: 
+    mes = "Agosto";
+    break;
+    case 9: 
+    mes = "Septiembre";
+    break;
+    case 10: 
+    mes = "Octubre";
+    break;
+    case 11: 
+    mes = "Noviembre";
+    break;
+    case 12: 
+    mes = "Diciembre";
+    break;
+  }
+  var f = diaSemana +", " +dia+ " de "+mes+" del "+ anio;
+  return f;
+}
+
+//Funcion para dar formato a una fecha con UTC
 function formatDate(fecha){
   var mes = fecha.getUTCMonth() +1;     // 11
   var dia = fecha.getUTCDate();      // 29
@@ -226,13 +311,97 @@ exports.search = function(req, res) {
   });
 };
 
+//Entradas y salidas del personal
+exports.entradasSalidas = function(req,res) {
+   findUserActive(req, function(err, empleado){
+    if (err)
+      res.send(500, err.message);
+    if(empleado.isAdmin){
+      var arr = [];
+      var temObj = {};
+      findEntradas(function(err,entradas){
+        if(err)
+          res.send(500, err.message);
+        findSalidas(function(err,salidas){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<entradas.length; x++){
+            var fecha = new Date(entradas[x].horaEntrada);
+            var mes = fecha.getUTCMonth() +1;     // 11
+            var dia = fecha.getUTCDate();      // 29
+            var anio = fecha.getUTCFullYear();
+            var diaSemana = fecha.getUTCDay();
+            temObj.entrada = entradas[x];
+            temObj.entradaH = formatDate(fecha);
+            for(var y=0; y<salidas.length;y++){
+              var fechaS = new Date(salidas[x].horaSalida);
+              var mesS = fechaS.getUTCMonth() +1;     // 11
+              var diaS = fechaS.getUTCDate();      // 29
+              var anioS = fechaS.getUTCFullYear();
+              var diaSemanaS = fechaS.getUTCDay();
+              if((String(entradas[x].iEmpleado._id) == String(salidas[y].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
+                temObj.salida = salidas[y];
+                temObj.salidaH = formatDate(fechaS);
+                break;
+              }
+              else
+                temObj.salida = {};
+            }
+            arr.push(temObj);
+            temObj = {};
+          }
+          res.status(200).render('entrada-salida',{user: empleado, users:arr});   
+        })
+      });
+    }
+    else{
+       var arr = [];
+      var temObj = {};
+      findEntradasById(empleado._id, function(err,entradas){
+        if(err)
+          res.send(500, err.message);
+        findSalidasById(empleado._id, function(err,salidas){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<entradas.length; x++){
+            var fecha = new Date(entradas[x].horaEntrada);
+            var mes = fecha.getUTCMonth() +1;     // 11
+            var dia = fecha.getUTCDate();      // 29
+            var anio = fecha.getUTCFullYear();
+            var diaSemana = fecha.getUTCDay();
+            temObj.entrada = entradas[x];
+            temObj.entradaH = formatDate(fecha);
+            for(var y=0; y<salidas.length;y++){
+              var fechaS = new Date(salidas[y].horaSalida);
+              var mesS = fechaS.getUTCMonth() +1;     // 11
+              var diaS = fechaS.getUTCDate();      // 29
+              var anioS = fechaS.getUTCFullYear();
+              var diaSemanaS = fechaS.getUTCDay();
+              if((mes == mesS) && (dia == diaS) && (anio == anioS)){
+                temObj.salida = salidas[y];
+                temObj.salidaH = formatDate(fechaS);
+                break;
+              }
+              else
+                temObj.salida = {};
+            }
+            arr.push(temObj);
+            temObj = {};
+          }
+          res.status(200).render('entrada-salida',{user: empleado, users:arr});   
+        })
+      });
+    }
+  });
+}
+
 //POST - Generar un reporte de incidencias
 exports.report = function(req,res){
   findUserActive(req, function(err, empleado){
     if (err)
       res.send(500, err.message);
     var fechaHoy = new Date();
-    fechaHoy = formatDate(fechaHoy);
+    fechaHoy = formatDateSimple(fechaHoy);
    
     var doc = new PDFDocument;
     doc.pipe(fs.createWriteStream('output.pdf'));
@@ -311,6 +480,147 @@ exports.report = function(req,res){
           }      
           doc.end();
         })
+      
+    }
+  });
+}
+
+
+//POST - Generar un reporte de incidencias
+exports.reportAsistencias = function(req,res){
+  findUserActive(req, function(err, empleado){
+    if (err)
+      res.send(500, err.message);
+    var fechaHoy = new Date();
+    fechaHoy = formatDateSimple(fechaHoy);
+   
+    var doc = new PDFDocument(  {
+            layout : 'landscape'
+        });
+    doc.pipe(fs.createWriteStream('output.pdf'));
+    doc.pipe(res);
+    //Header (logo y titulo)
+    doc
+    .image('public/img/logoamerica.png',25, 25, {width: 100})
+    .fontSize(25)
+    .text('Reporte de Asistencia', 150, 40)
+    .fontSize(20)
+    .text(fechaHoy,150,70);
+    if(empleado.isAdmin){
+     var xNombre = 40;
+     var yNombre = 180;
+     var xTipoI = 215;
+     var yTipoI = 180;
+     var xFechaHora = 450;
+     var yFechaHora = 180;
+      //Se muestra un titulo general
+      doc
+      .fontSize(20)
+      .text("Asistencias de todos los empleados", 150, 100)
+      .fontSize(15)
+      .text("Nombre",xNombre,yNombre)
+      .text("Entrada",xTipoI,yTipoI)
+      .text("Salida",xFechaHora,yFechaHora);
+
+      findEntradas(function(err,entradas){
+        if(err)
+          res.send(500, err.message);
+        findSalidas(function(err,salidas){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<entradas.length; x++){
+            var fecha = new Date(entradas[x].horaEntrada);
+            var mes = fecha.getUTCMonth() +1;     // 11
+            var dia = fecha.getUTCDate();      // 29
+            var anio = fecha.getUTCFullYear();
+            var diaSemana = fecha.getUTCDay();
+            var hSal = "";
+            yNombre += 30;
+            yTipoI += 30;
+            yFechaHora += 30;
+             doc
+               .fontSize(10)
+               .text(entradas[x].iEmpleado.nombre + " " +entradas[x].iEmpleado.apPaterno + " "+ entradas[x].iEmpleado.apMaterno, xNombre, yNombre )
+               .text(formatDate(fecha), xTipoI, yTipoI )
+            for(var y=0; y<salidas.length;y++){
+              var fechaS = new Date(salidas[y].horaSalida);
+              var mesS = fechaS.getUTCMonth() +1;     // 11
+              var diaS = fechaS.getUTCDate();      // 29
+              var anioS = fechaS.getUTCFullYear();
+              var diaSemanaS = fechaS.getUTCDay();
+              if((String(entradas[x].iEmpleado._id) == String(salidas[y].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
+                hSal = formatDate(fechaS);
+                break;
+              }
+              else
+                hSal = "No registró salida";
+            }
+            doc.text(hSal,xFechaHora, yFechaHora );
+
+          }
+          doc.end();
+          //res.status(200).render('entrada-salida',{user: empleado, users:arr});   
+        })
+      });
+    }
+    else{
+    var xNombre = 180;
+     var yNombre = 180;
+     var xTipoI = 425;
+     var yTipoI = 180;
+     var xFechaHora = 550;
+     var yFechaHora = 180;
+      //Se muestra un titulo general
+      doc
+      .fontSize(20)
+      .text("Incidencias de: " , 150, 100)
+      .fontSize(23)
+      .text(empleado.nombre +" "+empleado.apPaterno+" "+empleado.apMaterno, 300,100)
+      .fontSize(15)
+      //.text("Nombre",xNombre,yNombre)
+      .text("Entrada",xNombre,yNombre)
+      .text("Salida",xTipoI,yTipoI);
+
+      findEntradasById(empleado._id, function(err,entradas){
+        if(err)
+          res.send(500, err.message);
+        findSalidasById(empleado._id, function(err,salidas){
+          if(err)
+            res.send(500, err.message);
+          for(var x=0; x<entradas.length; x++){
+            var fecha = new Date(entradas[x].horaEntrada);
+            var mes = fecha.getUTCMonth() +1;     // 11
+            var dia = fecha.getUTCDate();      // 29
+            var anio = fecha.getUTCFullYear();
+            var diaSemana = fecha.getUTCDay();
+            var hSal = "";
+            yNombre += 30;
+            yTipoI += 30;
+            yFechaHora += 30;
+             doc
+               .fontSize(10)
+               //.text(entradas[x].iEmpleado.nombre + " " +entradas[x].iEmpleado.apPaterno + " "+ entradas[x].iEmpleado.apMaterno, xNombre, yNombre )
+               .text(formatDate(fecha), xNombre, yNombre )
+            for(var y=0; y<salidas.length;y++){
+              var fechaS = new Date(salidas[y].horaSalida);
+              var mesS = fechaS.getUTCMonth() +1;     // 11
+              var diaS = fechaS.getUTCDate();      // 29
+              var anioS = fechaS.getUTCFullYear();
+              var diaSemanaS = fechaS.getUTCDay();
+              if((mes == mesS) && (dia == diaS) && (anio == anioS)){
+                hSal = formatDate(fechaS);
+                break;
+              }
+              else
+                hSal = "No registró salida";
+            }
+            doc.text(hSal,xTipoI, yTipoI );
+
+          }
+          doc.end();
+          //res.status(200).render('entrada-salida',{user: empleado, users:arr});   
+        })
+      });
       
     }
   });
@@ -434,6 +744,49 @@ function findTipoEmpleadosByName(nombre, cb){
       cb(true);
     cb(false,tEmp)
   });
+}
+
+//Encontrar entradas  un empleado por id
+function findEntradasById(id,cb){
+  Entradas.find({"iEmpleado":ObjectId(id)})
+    .populate("iEmpleado")
+    .exec(function(err,entradas){
+      if(err)
+        cb(err);
+      cb(false,entradas); 
+    });
+}
+//Encontrar salidas  un empleado por id
+function findSalidasById(id,cb){
+  Salidas.find({"iEmpleado":ObjectId(id)})
+    .populate("iEmpleado")
+    .exec(function(err,entradas){
+      if(err)
+        cb(err);
+      cb(false,entradas); 
+    });
+}
+
+//Encontrar todas las entradas
+function findEntradas(cb){
+  Entradas.find({})
+    .populate("iEmpleado")
+    .exec(function(err,entradas){
+      if(err)
+        cb(err);
+      cb(false,entradas); 
+    });
+}
+
+//Encontrar todas las salidas
+function findSalidas(cb){
+  Salidas.find({})
+    .populate("iEmpleado")
+    .exec(function(err,salidas){
+      if(err)
+        cb(err);
+      cb(false,salidas); 
+    });
 }
 
 //Encontrar todas las incidencias
