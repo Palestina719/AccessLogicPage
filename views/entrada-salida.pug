@@ -62,12 +62,21 @@ body
 									each val, index in users
 										tr
 											if user.isAdmin
-												td(class="text-center")=val.entrada.iEmpleado.nombre + " "+ val.entrada.iEmpleado.apPaterno+" "+ val.entrada.iEmpleado.apMaterno 
-											td(class="text-center")=val.entradaH
-											if val.salida.horaSalida == null
-												td(class="text-center") No registro salida
+												if val.entrada && val.salida
+													td(class="text-center")=val.entrada.iEmpleado.nombre + " "+ val.entrada.iEmpleado.apPaterno+" "+ val.entrada.iEmpleado.apMaterno 
+												else if val.entrada && val.salida==null
+													td(class="text-center")=val.entrada.iEmpleado.nombre + " "+ val.entrada.iEmpleado.apPaterno+" "+ val.entrada.iEmpleado.apMaterno 
+												else if val.salida && val.entrada == null
+													td(class="text-center")=val.salida.iEmpleado.nombre + " "+ val.salida.iEmpleado.apPaterno+" "+ val.salida.iEmpleado.apMaterno 				
+											
+											if val.entrada
+												td(class="text-center")=val.entradaH
 											else
+												td(class="text-center") No registro entrada
+											if val.salida
 												td(class="text-center")=val.salidaH
+											else
+												td(class="text-center") No registro salida
 						
 						div(class="small-12 medium-12 large-12 text-center")
 							form(method='POST', action='/reporte-asistencias' target='_blank')

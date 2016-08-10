@@ -325,31 +325,131 @@ exports.entradasSalidas = function(req,res) {
         findSalidas(function(err,salidas){
           if(err)
             res.send(500, err.message);
-          for(var x=0; x<entradas.length; x++){
-            var fecha = new Date(entradas[x].horaEntrada);
-            var mes = fecha.getUTCMonth() +1;     // 11
-            var dia = fecha.getUTCDate();      // 29
-            var anio = fecha.getUTCFullYear();
-            var diaSemana = fecha.getUTCDay();
-            temObj.entrada = entradas[x];
-            temObj.entradaH = formatDate(fecha);
-            for(var y=0; y<salidas.length;y++){
-              var fechaS = new Date(salidas[x].horaSalida);
-              var mesS = fechaS.getUTCMonth() +1;     // 11
-              var diaS = fechaS.getUTCDate();      // 29
-              var anioS = fechaS.getUTCFullYear();
-              var diaSemanaS = fechaS.getUTCDay();
-              if((String(entradas[x].iEmpleado._id) == String(salidas[y].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
-                temObj.salida = salidas[y];
-                temObj.salidaH = formatDate(fechaS);
-                break;
+          //Multiples if else
+          var sizeEntradas = entradas.length;
+          var sizeSalidas = salidas.length;
+          //Entradas > 0
+          if(sizeEntradas > 0){
+            if(sizeEntradas >= sizeSalidas){
+              for(var x=0; x<entradas.length; x++){
+                var fecha = new Date(entradas[x].horaEntrada);
+                var mes = fecha.getUTCMonth() +1;     // 11
+                var dia = fecha.getUTCDate();      // 29
+                var anio = fecha.getUTCFullYear();
+                var diaSemana = fecha.getUTCDay();
+                //console.log(entradas[x])
+                temObj.entrada = entradas[x];
+                temObj.entradaH = formatDate(fecha);
+                //COndicion de salidas > 0 
+                if(sizeSalidas > 0){
+                  for(var y=0; y<salidas.length;y++){
+                    //validcacion de salidas
+                    var fechaS = new Date(salidas[y].horaSalida);
+                    var mesS = fechaS.getUTCMonth() +1;     // 11
+                    var diaS = fechaS.getUTCDate();      // 29
+                    var anioS = fechaS.getUTCFullYear();
+                    var diaSemanaS = fechaS.getUTCDay();
+                    if((String(entradas[x].iEmpleado._id) == String(salidas[y].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
+                      temObj.salida = salidas[y];
+                      temObj.salidaH = formatDate(fechaS);
+                      break;
+                    }
+                    else
+                      temObj.salida = null;
+                  }
+                }
+                //Salidas 0
+                else{
+                  temObj.salida = null;
+                }
+                
+                arr.push(temObj);
+                temObj = {};
               }
-              else
-                temObj.salida = {};
             }
-            arr.push(temObj);
-            temObj = {};
+            //Entradas menor a salidas
+            else{
+              for(var x=0; x<salidas.length; x++){
+                var fecha = new Date(salidas[x].horaSalida);
+                var mes = fecha.getUTCMonth() +1;     // 11
+                var dia = fecha.getUTCDate();      // 29
+                var anio = fecha.getUTCFullYear();
+                var diaSemana = fecha.getUTCDay();
+                //console.log(entradas[x])
+                temObj.salida = salidas[x];
+                temObj.salidaH = formatDate(fecha);
+                //COndicion de entradas > 0 
+                if(sizeEntradas > 0){
+                  for(var y=0; y<entradas.length;y++){
+                    //validcacion de salidas
+                    var fechaS = new Date(entradas[y].horaEntrada);
+                    var mesS = fechaS.getUTCMonth() +1;     // 11
+                    var diaS = fechaS.getUTCDate();      // 29
+                    var anioS = fechaS.getUTCFullYear();
+                    var diaSemanaS = fechaS.getUTCDay();
+                    if((String(entradas[y].iEmpleado._id) == String(salidas[x].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
+                      temObj.entrada = entradas[y];
+                      temObj.entradaH = formatDate(fechaS);
+                      break;
+                    }
+                    else
+                      temObj.entrada = null;
+                  }
+                }
+                //Salidas 0
+                else{
+                  temObj.entrada = null;
+                }
+                
+                arr.push(temObj);
+                temObj = {};
+              }
+            }
           }
+          //Entradas = 0 OKKKK
+          else{
+            if(sizeSalidas > 0){ //OKK
+              for(var x=0; x<salidas.length; x++){
+                var fecha = new Date(salidas[x].horaSalida);
+                var mes = fecha.getUTCMonth() +1;     // 11
+                var dia = fecha.getUTCDate();      // 29
+                var anio = fecha.getUTCFullYear();
+                var diaSemana = fecha.getUTCDay();
+               // console.log(salidas[x]);
+                temObj.salida = salidas[x];
+                temObj.salidaH = formatDate(fecha);
+                //COndicion de salidas > 0 
+                if(sizeEntradas > 0){
+                  for(var y=0; y<entradas.length;y++){
+                    //validcacion de salidas
+                    var fechaS = new Date(entradas[x].horaSalida);
+                    var mesS = fechaS.getUTCMonth() +1;     // 11
+                    var diaS = fechaS.getUTCDate();      // 29
+                    var anioS = fechaS.getUTCFullYear();
+                    var diaSemanaS = fechaS.getUTCDay();
+                    if((String(entradas[y].iEmpleado._id) == String(salidas[x].iEmpleado._id)) && (mes == mesS) && (dia == diaS) && (anio == anioS)){
+                      temObj.entrada = salidas[y];
+                      temObj.entradaH = formatDate(fechaS);
+                      break;
+                    }
+                    else
+                      temObj.entrada = null;
+                  }
+                }
+                else{
+                  temObj.entrada = null;
+                }
+                
+                arr.push(temObj);
+                temObj = {};
+              }
+            }
+            //Salidas > 0
+            else{
+
+            }
+          }
+          //console.log(arr[0]);
           res.status(200).render('entrada-salida',{user: empleado, users:arr});   
         })
       });
